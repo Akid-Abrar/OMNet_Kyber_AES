@@ -8,6 +8,7 @@ Define_Module(Node);
 
 size_t key_length;
 
+//remove unnecessary comments
 void Node::initialize()
 {
     const char* nodeName = getName();
