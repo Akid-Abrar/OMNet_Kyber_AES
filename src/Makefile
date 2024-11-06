@@ -34,7 +34,7 @@ PROJECTRELATIVE_PATH = src
 O = $(PROJECT_OUTPUT_DIR)/$(CONFIGNAME)/$(PROJECTRELATIVE_PATH)
 
 # Object files for local .cpp, .msg and .sm files
-OBJS = $O/Node.o $O/messages_m.o
+OBJS = $O/Ethernet_Node.o $O/Node.o $O/messages_m.o
 
 # Message files
 MSGFILES = \
