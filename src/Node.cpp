@@ -2,13 +2,14 @@
 #include <cstring>
 #include <iomanip>
 #include <sstream>
-
+#include <chrono>
+#include <iostream>
 
 Define_Module(Node);
 
 size_t key_length;
 
-//remove unnecessary comments
+// Remove unnecessary comments
 void Node::initialize()
 {
     const char* nodeName = getName();
@@ -28,9 +29,20 @@ void Node::sendPublickKey()
 
     const char* nodeName = getName();
 
-
+    // Measure time for keypair generation
+    auto start = std::chrono::high_resolution_clock::now();
     if (OQS_KEM_keypair(kem, publicKey, secretKey) != OQS_SUCCESS)
         error("Failed to generate Kyber512 key pair");
+    auto end = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
+
+    // Print time taken
+    EV << nodeName << " generated Kyber512 key pair in " << duration << " microseconds.\n";
+
+    // Print sizes
+    EV << "Public key size: " << kem->length_public_key << " bytes.\n";
+    EV << "Secret key size: " << kem->length_secret_key << " bytes.\n";
+    EV << "Shared secret size: " << kem->length_shared_secret << " bytes.\n";
 
     EV << nodeName << " generated Kyber512 key pair.\n";
     EV << nodeName << "'s public key: " << formatHex(publicKey, kem->length_public_key) << "\n";
@@ -48,7 +60,6 @@ void Node::sendPublickKey()
         msg->setPayload(i, static_cast<char>(publicKey[i]));
     }
 
-    //msg->setPayload(std::string(reinterpret_cast<char*>(publicKey), kem->length_public_key));
     send(msg, "outPort");
 
     OQS_KEM_free(kem);
@@ -113,7 +124,7 @@ void Node::handleMessage(cMessage *msg)
     KyberMessage *kMsg = dynamic_cast<KyberMessage*>(msg);
 
     if (!kMsg) {
-            // Handle self-messages
+        // Handle self-messages
         if (msg->isSelfMessage()) {
             if (strcmp(msg->getName(), "sendEncryptedData") == 0) {
                 // Process self-message to send encrypted data
@@ -123,7 +134,7 @@ void Node::handleMessage(cMessage *msg)
         } else {
             // Unknown message type
             delete msg;
-            EV << "deleting for unknown type\n";
+            EV << "Deleting unknown message type\n";
         }
         return;
     }
@@ -131,11 +142,8 @@ void Node::handleMessage(cMessage *msg)
     size_t payloadSize = kMsg->getPayloadArraySize();
     if (strcmp(nodeName, "nodeB") == 0 && kMsg->getMsgType() == 0) {
         // Node B: Receive public key and send ciphertext
-        EV << nodeName << " received public key from Node.\n";
+        EV << nodeName << " received public key from Node A.\n";
         bubble("Received public key");
-
-//      std::string pubKeyStr = kMsg->getPayload();
-//      const uint8_t *receivedPublicKey = reinterpret_cast<const uint8_t*>(pubKeyStr.data());
 
         // Allocate memory to store the payload
         uint8_t *receivedPublicKey = new uint8_t[payloadSize];
@@ -145,7 +153,7 @@ void Node::handleMessage(cMessage *msg)
             receivedPublicKey[i] = static_cast<uint8_t>(kMsg->getPayload(i));
         }
 
-        EV <<"public key: "<< formatHex(receivedPublicKey, key_length) << endl;
+        EV << "Public key: " << formatHex(receivedPublicKey, key_length) << endl;
 
         OQS_KEM *kem = OQS_KEM_new("Kyber512");
         if (!kem) error("Failed to initialize Kyber512 KEM");
@@ -153,21 +161,31 @@ void Node::handleMessage(cMessage *msg)
         uint8_t *ciphertext = new uint8_t[kem->length_ciphertext];
         sharedSecret = new uint8_t[kem->length_shared_secret];
 
+        // Measure time for encapsulation
+        auto start = std::chrono::high_resolution_clock::now();
         if (OQS_KEM_encaps(kem, ciphertext, sharedSecret, receivedPublicKey) != OQS_SUCCESS)
             error("Failed to encapsulate shared secret");
+        auto end = std::chrono::high_resolution_clock::now();
+        auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
 
-        EV <<nodeName << "'s shared secret: " << formatHex(sharedSecret, kem->length_shared_secret) << "\n";
+        // Print time taken
+        EV << nodeName << " encapsulated shared secret in " << duration << " microseconds.\n";
+
+        // Print sizes
+        EV << "Ciphertext size: " << kem->length_ciphertext << " bytes.\n";
+        EV << "Shared secret size: " << kem->length_shared_secret << " bytes.\n";
+
+        EV << nodeName << "'s shared secret: " << formatHex(sharedSecret, kem->length_shared_secret) << "\n";
+
         // Send ciphertext back to Node A
         KyberMessage *respMsg = new KyberMessage("Ciphertext");
         respMsg->setMsgType(1);
         // Set the payload size
         respMsg->setPayloadArraySize(kem->length_ciphertext);
-        // Copy public key into payload array
+        // Copy ciphertext into payload array
         for (size_t i = 0; i < kem->length_ciphertext; ++i) {
             respMsg->setPayload(i, static_cast<char>(ciphertext[i]));
         }
-
-        //respMsg->setPayload(std::string(reinterpret_cast<char*>(ciphertext), kem->length_ciphertext));
 
         send(respMsg, "outPort");
 
@@ -179,8 +197,6 @@ void Node::handleMessage(cMessage *msg)
 
     } else if (strcmp(nodeName, "nodeA") == 0 && kMsg->getMsgType() == 1) {
         // Node A: Receive ciphertext and derive shared secret
-//        std::string cipherTextStr = kMsg->getPayload();
-//        const uint8_t *receivedCiphertext = reinterpret_cast<const uint8_t*>(cipherTextStr.data());
 
         // Allocate memory to store the payload
         uint8_t *receivedCiphertext = new uint8_t[payloadSize];
@@ -195,11 +211,20 @@ void Node::handleMessage(cMessage *msg)
 
         sharedSecret = new uint8_t[kem->length_shared_secret];
 
+        // Measure time for decapsulation
+        auto start = std::chrono::high_resolution_clock::now();
         if (OQS_KEM_decaps(kem, sharedSecret, receivedCiphertext, secretKey) != OQS_SUCCESS)
             error("Failed to decapsulate shared secret");
+        auto end = std::chrono::high_resolution_clock::now();
+        auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
 
-        EV <<nodeName << " decapsulated shared secret.\n";
-        EV <<nodeName << "'s shared secret: " << formatHex(sharedSecret, kem->length_shared_secret) << "\n";
+        EV << nodeName << " decapsulated shared secret in " << duration << " microseconds.\n";
+
+        // Print sizes
+        EV << "Shared secret size: " << kem->length_shared_secret << " bytes.\n";
+
+        EV << nodeName << " decapsulated shared secret.\n";
+        EV << nodeName << "'s shared secret: " << formatHex(sharedSecret, kem->length_shared_secret) << "\n";
         bubble("Shared secret derived");
 
         OQS_KEM_free(kem);
@@ -207,54 +232,8 @@ void Node::handleMessage(cMessage *msg)
         // Schedule sending encrypted data
         scheduleAt(simTime() + 1, new cMessage("sendEncryptedData"));
 
-    }
-//        else if (strcmp(msg->getName(), "sendEncryptedData") == 0) {
-//        bubble("yooooooooooooooooooooooooooooooooooooo");
-//        EV<<"chk\n";
-//        // Both nodes send encrypted data
-//        std::string plainText = "Secret Message";
-//        // Pad plaintext to AES block size
-//        size_t paddedLen = ((plainText.size() + AES_BLOCK_SIZE - 1) / AES_BLOCK_SIZE) * AES_BLOCK_SIZE;
-//        unsigned char *plainData = new unsigned char[paddedLen];
-//        memset(plainData, 0, paddedLen);
-//        memcpy(plainData, plainText.c_str(), plainText.size());
-//
-//        // AES encryption
-//        AES_KEY aesKey;
-//        if (AES_set_encrypt_key(sharedSecret, 256, &aesKey) < 0)
-//            error("Failed to set AES encryption key");
-//
-//        unsigned char *encryptedData = new unsigned char[paddedLen];
-//        unsigned char iv[AES_BLOCK_SIZE] = {0};
-//
-//        AES_cbc_encrypt(plainData, encryptedData, paddedLen, &aesKey, iv, AES_ENCRYPT);
-//
-//        // Send encrypted data
-//        KyberMessage *encMsg = new KyberMessage("EncryptedData");
-//        encMsg->setMsgType(2);
-//
-//        // Set the payload array size
-//        encMsg->setPayloadArraySize(paddedLen);
-//        EV << "before generating payload"<<endl;
-//        // Copy the encrypted data into the payload array
-//        for (size_t i = 0; i < paddedLen; ++i) {
-//            encMsg->setPayload(i, static_cast<char>(encryptedData[i]));
-//        }
-//        EV << "after generating payload"<<endl;
-//        //encMsg->setPayload(std::string(reinterpret_cast<char*>(encryptedData), paddedLen));
-//        send(encMsg, "outPort");
-//
-//        delete[] plainData;
-//        delete[] encryptedData;
-//
-//    }
-        else if (kMsg->getMsgType() == 2) {
+    } else if (kMsg->getMsgType() == 2) {
         // Receive and decrypt data
-//        std::string encryptedDataStr = kMsg->getPayload();
-//        const unsigned char *receivedEncryptedData = reinterpret_cast<const unsigned char*>(encryptedDataStr.data());
-//        size_t dataLen = encryptedDataStr.size();
-
-
         size_t dataLen = kMsg->getPayloadArraySize();
         unsigned char *receivedEncryptedData = new unsigned char[dataLen];
 
@@ -295,4 +274,3 @@ std::string Node::formatHex(const uint8_t *data, size_t length)
         oss << std::setw(2) << static_cast<int>(data[i]);
     return oss.str();
 }
-
