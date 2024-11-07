@@ -19,14 +19,14 @@ network KyberEthernetNetwork
 //        switch: EtherSwitch {
 //            @display("p=300,200");
 //        }
-        nodeA: StandardHost {
+        nodeA: Ethernet_Node {
             @display("p=100,200");
         }
-        nodeB: StandardHost {
+        nodeB: Ethernet_Node {
             @display("p=500,200");
         }
     connections allowunconnected:
 //        hostA.ethg++ <--> EthernetCable <--> switch.ethg++;
 //        hostB.ethg++ <--> EthernetCable <--> switch.ethg++;
-        nodeA.ethg++ <--> Eth1G <--> nodeB.ethg++;
+        nodeA.port++ <--> Eth1G <--> nodeB.port++;
 }

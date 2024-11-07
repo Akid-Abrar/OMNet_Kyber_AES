@@ -4,6 +4,7 @@
 #include <sstream>
 #include <chrono>
 #include <iostream>
+#include <x86intrin.h>  // For __rdtsc()
 
 Define_Module(Node);
 
@@ -29,15 +30,21 @@ void Node::sendPublickKey()
 
     const char* nodeName = getName();
 
-    // Measure time for keypair generation
-    auto start = std::chrono::high_resolution_clock::now();
+    // Measure time and clock cycles for keypair generation
+    auto start_time = std::chrono::high_resolution_clock::now();
+    unsigned long long start_cycles = __rdtsc();
+
     if (OQS_KEM_keypair(kem, publicKey, secretKey) != OQS_SUCCESS)
         error("Failed to generate Kyber512 key pair");
-    auto end = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
 
-    // Print time taken
-    EV << nodeName << " generated Kyber512 key pair in " << duration << " microseconds.\n";
+    unsigned long long end_cycles = __rdtsc();
+    auto end_time = std::chrono::high_resolution_clock::now();
+    auto duration_time = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count();
+    unsigned long long cycles = end_cycles - start_cycles;
+
+    // Print time taken and clock cycles
+    EV << nodeName << " generated Kyber512 key pair in " << duration_time << " microseconds.\n";
+    EV << nodeName << " key pair generation took " << cycles << " CPU cycles.\n";
 
     // Print sizes
     EV << "Public key size: " << kem->length_public_key << " bytes.\n";
@@ -161,15 +168,21 @@ void Node::handleMessage(cMessage *msg)
         uint8_t *ciphertext = new uint8_t[kem->length_ciphertext];
         sharedSecret = new uint8_t[kem->length_shared_secret];
 
-        // Measure time for encapsulation
-        auto start = std::chrono::high_resolution_clock::now();
+        // Measure time and clock cycles for encapsulation
+        auto start_time = std::chrono::high_resolution_clock::now();
+        unsigned long long start_cycles = __rdtsc();
+
         if (OQS_KEM_encaps(kem, ciphertext, sharedSecret, receivedPublicKey) != OQS_SUCCESS)
             error("Failed to encapsulate shared secret");
-        auto end = std::chrono::high_resolution_clock::now();
-        auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
 
-        // Print time taken
-        EV << nodeName << " encapsulated shared secret in " << duration << " microseconds.\n";
+        unsigned long long end_cycles = __rdtsc();
+        auto end_time = std::chrono::high_resolution_clock::now();
+        auto duration_time = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count();
+        unsigned long long cycles = end_cycles - start_cycles;
+
+        // Print time taken and clock cycles
+        EV << nodeName << " encapsulated shared secret in " << duration_time << " microseconds.\n";
+        EV << nodeName << " encapsulation took " << cycles << " CPU cycles.\n";
 
         // Print sizes
         EV << "Ciphertext size: " << kem->length_ciphertext << " bytes.\n";
@@ -211,14 +224,20 @@ void Node::handleMessage(cMessage *msg)
 
         sharedSecret = new uint8_t[kem->length_shared_secret];
 
-        // Measure time for decapsulation
-        auto start = std::chrono::high_resolution_clock::now();
+        // Measure time and clock cycles for decapsulation
+        auto start_time = std::chrono::high_resolution_clock::now();
+        unsigned long long start_cycles = __rdtsc();
+
         if (OQS_KEM_decaps(kem, sharedSecret, receivedCiphertext, secretKey) != OQS_SUCCESS)
             error("Failed to decapsulate shared secret");
-        auto end = std::chrono::high_resolution_clock::now();
-        auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
 
-        EV << nodeName << " decapsulated shared secret in " << duration << " microseconds.\n";
+        unsigned long long end_cycles = __rdtsc();
+        auto end_time = std::chrono::high_resolution_clock::now();
+        auto duration_time = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count();
+        unsigned long long cycles = end_cycles - start_cycles;
+
+        EV << nodeName << " decapsulated shared secret in " << duration_time << " microseconds.\n";
+        EV << nodeName << " decapsulation took " << cycles << " CPU cycles.\n";
 
         // Print sizes
         EV << "Shared secret size: " << kem->length_shared_secret << " bytes.\n";

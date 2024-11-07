@@ -3,15 +3,14 @@
 #include <iomanip>
 #include <sstream>
 
-
 Define_Module(Ethernet_Node);
 
 size_t kyber_key_length;
 
-//remove unnecessary comments
+// Remove unnecessary comments
 void Ethernet_Node::initialize()
 {
-    EV<<"Initialized";
+    EV << "Initialized";
     bubble("init");
     const char* nodeName = getName();
     if (strcmp(nodeName, "nodeA") == 0) {
@@ -22,7 +21,7 @@ void Ethernet_Node::initialize()
 void Ethernet_Node::sendPublickKey()
 {
     // Node A: Generate key pair and send public key
-    EV<<"here\n";
+    EV << "here\n";
     OQS_KEM *kem = OQS_KEM_new("Kyber512");
     if (!kem) error("Failed to initialize Kyber512 KEM");
 
@@ -30,7 +29,6 @@ void Ethernet_Node::sendPublickKey()
     secretKey = new uint8_t[kem->length_secret_key];
 
     const char* nodeName = getName();
-
 
     if (OQS_KEM_keypair(kem, publicKey, secretKey) != OQS_SUCCESS)
         error("Failed to generate Kyber512 key pair");
@@ -51,8 +49,8 @@ void Ethernet_Node::sendPublickKey()
         msg->setPayload(i, static_cast<char>(publicKey[i]));
     }
 
-    //msg->setPayload(std::string(reinterpret_cast<char*>(publicKey), kem->length_public_key));
-    send(msg, "outPort");
+    // Send the message through the correct output gate
+    send(msg, "port$o", 0); // Use the appropriate gate index
 
     OQS_KEM_free(kem);
 }
@@ -100,7 +98,7 @@ void Ethernet_Node::sendEncryptedData()
     }
 
     // Send the encrypted message to the other node
-    send(encMsg, "outPort");
+    send(encMsg, "port$o", 0); // Use the appropriate gate index
 
     EV << nodeName << " sent encrypted data at time " << simTime() << endl;
 
@@ -116,7 +114,7 @@ void Ethernet_Node::handleMessage(cMessage *msg)
     KyberMessage *kMsg = dynamic_cast<KyberMessage*>(msg);
 
     if (!kMsg) {
-            // Handle self-messages
+        // Handle self-messages
         if (msg->isSelfMessage()) {
             if (strcmp(msg->getName(), "sendEncryptedData") == 0) {
                 // Process self-message to send encrypted data
@@ -126,7 +124,7 @@ void Ethernet_Node::handleMessage(cMessage *msg)
         } else {
             // Unknown message type
             delete msg;
-            EV << "deleting for unknown type\n";
+            EV << "Deleting unknown message type\n";
         }
         return;
     }
@@ -134,11 +132,8 @@ void Ethernet_Node::handleMessage(cMessage *msg)
     size_t payloadSize = kMsg->getPayloadArraySize();
     if (strcmp(nodeName, "nodeB") == 0 && kMsg->getMsgType() == 0) {
         // Node B: Receive public key and send ciphertext
-        EV << nodeName << " received public key from Node.\n";
+        EV << nodeName << " received public key from Node A.\n";
         bubble("Received public key");
-
-//      std::string pubKeyStr = kMsg->getPayload();
-//      const uint8_t *receivedPublicKey = reinterpret_cast<const uint8_t*>(pubKeyStr.data());
 
         // Allocate memory to store the payload
         uint8_t *receivedPublicKey = new uint8_t[payloadSize];
@@ -148,7 +143,7 @@ void Ethernet_Node::handleMessage(cMessage *msg)
             receivedPublicKey[i] = static_cast<uint8_t>(kMsg->getPayload(i));
         }
 
-        EV <<"public key: "<< formatHex(receivedPublicKey, kyber_key_length) << endl;
+        EV << "Public key: " << formatHex(receivedPublicKey, kyber_key_length) << endl;
 
         OQS_KEM *kem = OQS_KEM_new("Kyber512");
         if (!kem) error("Failed to initialize Kyber512 KEM");
@@ -159,20 +154,20 @@ void Ethernet_Node::handleMessage(cMessage *msg)
         if (OQS_KEM_encaps(kem, ciphertext, sharedSecret, receivedPublicKey) != OQS_SUCCESS)
             error("Failed to encapsulate shared secret");
 
-        EV <<nodeName << "'s shared secret: " << formatHex(sharedSecret, kem->length_shared_secret) << "\n";
+        EV << nodeName << "'s shared secret: " << formatHex(sharedSecret, kem->length_shared_secret) << "\n";
+
         // Send ciphertext back to Node A
         KyberMessage *respMsg = new KyberMessage("Ciphertext");
         respMsg->setMsgType(1);
         // Set the payload size
         respMsg->setPayloadArraySize(kem->length_ciphertext);
-        // Copy public key into payload array
+        // Copy ciphertext into payload array
         for (size_t i = 0; i < kem->length_ciphertext; ++i) {
             respMsg->setPayload(i, static_cast<char>(ciphertext[i]));
         }
 
-        //respMsg->setPayload(std::string(reinterpret_cast<char*>(ciphertext), kem->length_ciphertext));
-
-        send(respMsg, "outPort");
+        // Send the response message
+        send(respMsg, "port$o", 0); // Use the appropriate gate index
 
         delete[] ciphertext;
         OQS_KEM_free(kem);
@@ -182,8 +177,6 @@ void Ethernet_Node::handleMessage(cMessage *msg)
 
     } else if (strcmp(nodeName, "nodeA") == 0 && kMsg->getMsgType() == 1) {
         // Node A: Receive ciphertext and derive shared secret
-//        std::string cipherTextStr = kMsg->getPayload();
-//        const uint8_t *receivedCiphertext = reinterpret_cast<const uint8_t*>(cipherTextStr.data());
 
         // Allocate memory to store the payload
         uint8_t *receivedCiphertext = new uint8_t[payloadSize];
@@ -201,8 +194,8 @@ void Ethernet_Node::handleMessage(cMessage *msg)
         if (OQS_KEM_decaps(kem, sharedSecret, receivedCiphertext, secretKey) != OQS_SUCCESS)
             error("Failed to decapsulate shared secret");
 
-        EV <<nodeName << " decapsulated shared secret.\n";
-        EV <<nodeName << "'s shared secret: " << formatHex(sharedSecret, kem->length_shared_secret) << "\n";
+        EV << nodeName << " decapsulated shared secret.\n";
+        EV << nodeName << "'s shared secret: " << formatHex(sharedSecret, kem->length_shared_secret) << "\n";
         bubble("Shared secret derived");
 
         OQS_KEM_free(kem);
@@ -210,53 +203,8 @@ void Ethernet_Node::handleMessage(cMessage *msg)
         // Schedule sending encrypted data
         scheduleAt(simTime() + 1, new cMessage("sendEncryptedData"));
 
-    }
-//        else if (strcmp(msg->getName(), "sendEncryptedData") == 0) {
-//        bubble("yooooooooooooooooooooooooooooooooooooo");
-//        EV<<"chk\n";
-//        // Both nodes send encrypted data
-//        std::string plainText = "Secret Message";
-//        // Pad plaintext to AES block size
-//        size_t paddedLen = ((plainText.size() + AES_BLOCK_SIZE - 1) / AES_BLOCK_SIZE) * AES_BLOCK_SIZE;
-//        unsigned char *plainData = new unsigned char[paddedLen];
-//        memset(plainData, 0, paddedLen);
-//        memcpy(plainData, plainText.c_str(), plainText.size());
-//
-//        // AES encryption
-//        AES_KEY aesKey;
-//        if (AES_set_encrypt_key(sharedSecret, 256, &aesKey) < 0)
-//            error("Failed to set AES encryption key");
-//
-//        unsigned char *encryptedData = new unsigned char[paddedLen];
-//        unsigned char iv[AES_BLOCK_SIZE] = {0};
-//
-//        AES_cbc_encrypt(plainData, encryptedData, paddedLen, &aesKey, iv, AES_ENCRYPT);
-//
-//        // Send encrypted data
-//        KyberMessage *encMsg = new KyberMessage("EncryptedData");
-//        encMsg->setMsgType(2);
-//
-//        // Set the payload array size
-//        encMsg->setPayloadArraySize(paddedLen);
-//        EV << "before generating payload"<<endl;
-//        // Copy the encrypted data into the payload array
-//        for (size_t i = 0; i < paddedLen; ++i) {
-//            encMsg->setPayload(i, static_cast<char>(encryptedData[i]));
-//        }
-//        EV << "after generating payload"<<endl;
-//        //encMsg->setPayload(std::string(reinterpret_cast<char*>(encryptedData), paddedLen));
-//        send(encMsg, "outPort");
-//
-//        delete[] plainData;
-//        delete[] encryptedData;
-//
-//    }
-        else if (kMsg->getMsgType() == 2) {
+    } else if (kMsg->getMsgType() == 2) {
         // Receive and decrypt data
-//        std::string encryptedDataStr = kMsg->getPayload();
-//        const unsigned char *receivedEncryptedData = reinterpret_cast<const unsigned char*>(encryptedDataStr.data());
-//        size_t dataLen = encryptedDataStr.size();
-
 
         size_t dataLen = kMsg->getPayloadArraySize();
         unsigned char *receivedEncryptedData = new unsigned char[dataLen];
@@ -298,4 +246,3 @@ std::string Ethernet_Node::formatHex(const uint8_t *data, size_t length)
         oss << std::setw(2) << static_cast<int>(data[i]);
     return oss.str();
 }
-
