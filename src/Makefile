@@ -2,7 +2,7 @@
 # OMNeT++/OMNEST Makefile for KyberAESProject
 #
 # This file was generated with the command:
-#  opp_makemake -f --deep -KINET_PROJ=/home/veins/src/inet -DINET_IMPORT -I/home/veins/liboqs/install/include -I/usr/include/openssl -I$$\(INET_PROJ\)/src -L/home/veins/liboqs/install/lib -L$$\(INET_PROJ\)/src -loqs -lssl -lcrypto -lpthread -lINET$$\(D\)
+#  opp_makemake -f --deep -KINET_PROJ=/home/veins/src/inet -KLTE_PROJ=/home/veins/src/simulte -KVEINS_INET_PROJ=/home/veins/src/veins/subprojects/veins_inet -KVEINS_PROJ=/home/veins/src/veins -DINET_IMPORT -I/home/veins/liboqs/install/include -I/usr/include/openssl -I$$\(INET_PROJ\)/src -I$$\(LTE_PROJ\)/src -I$$\(VEINS_INET_PROJ\)/src -I$$\(VEINS_PROJ\)/src -I. -L/home/veins/liboqs/install/lib -L$$\(INET_PROJ\)/src -L$$\(LTE_PROJ\)/src -loqs -lssl -lcrypto -lpthread -lINET$$\(D\) -llte$$\(D\)
 #
 
 # Name of target to be created (-o option)
@@ -20,13 +20,20 @@ USERIF_LIBS = $(ALL_ENV_LIBS) # that is, $(TKENV_LIBS) $(QTENV_LIBS) $(CMDENV_LI
 #USERIF_LIBS = $(QTENV_LIBS)
 
 # C++ include paths (with -I)
-INCLUDE_PATH = -I/home/veins/liboqs/install/include -I/usr/include/openssl -I$(INET_PROJ)/src
+INCLUDE_PATH = \
+    -I/home/veins/liboqs/install/include \
+    -I/usr/include/openssl \
+    -I$(INET_PROJ)/src \
+    -I$(LTE_PROJ)/src \
+    -I$(VEINS_INET_PROJ)/src \
+    -I$(VEINS_PROJ)/src \
+    -I.
 
 # Additional object and library files to link with
 EXTRA_OBJS =
 
 # Additional libraries (-L, -l options)
-LIBS = $(LDFLAG_LIBPATH)/home/veins/liboqs/install/lib $(LDFLAG_LIBPATH)$(INET_PROJ)/src  -loqs -lssl -lcrypto -lpthread -lINET$(D)
+LIBS = $(LDFLAG_LIBPATH)/home/veins/liboqs/install/lib $(LDFLAG_LIBPATH)$(INET_PROJ)/src $(LDFLAG_LIBPATH)$(LTE_PROJ)/src  -loqs -lssl -lcrypto -lpthread -lINET$(D) -llte$(D)
 
 # Output directory
 PROJECT_OUTPUT_DIR = ../out
@@ -45,6 +52,9 @@ SMFILES =
 
 # Other makefile variables (-K)
 INET_PROJ=/home/veins/src/inet
+LTE_PROJ=/home/veins/src/simulte
+VEINS_INET_PROJ=/home/veins/src/veins/subprojects/veins_inet
+VEINS_PROJ=/home/veins/src/veins
 
 #------------------------------------------------------------------------------
 
@@ -65,7 +75,7 @@ include $(CONFIGFILE)
 # Simulation kernel and user interface libraries
 OMNETPP_LIBS = $(OPPMAIN_LIB) $(USERIF_LIBS) $(KERNEL_LIBS) $(SYS_LIBS)
 ifneq ($(PLATFORM),win32.x86_64)
-LIBS += -Wl,-rpath,$(abspath /home/veins/liboqs/install/lib) -Wl,-rpath,$(abspath $(INET_PROJ)/src)
+LIBS += -Wl,-rpath,$(abspath /home/veins/liboqs/install/lib) -Wl,-rpath,$(abspath $(INET_PROJ)/src) -Wl,-rpath,$(abspath $(LTE_PROJ)/src)
 endif
 
 COPTS = $(CFLAGS) $(IMPORT_DEFINES) -DINET_IMPORT $(INCLUDE_PATH) -I$(OMNETPP_INCL_DIR)
