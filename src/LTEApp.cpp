@@ -1,18 +1,21 @@
 #include "LTEApp.h"
 
-// Include the necessary headers
-#include <iomanip>           // For std::setw and std::setfill
-#include <cstring>
-#include <chrono>
-#include <iostream>
-#include <x86intrin.h>
+// Include necessary headers
 #include <inet/common/INETDefs.h>
 #include <inet/common/packet/Packet.h>
-#include <inet/networklayer/common/L3AddressResolver.h>
+#include <inet/networklayer/common/L3Address.h>
 #include <inet/applications/common/SocketTag_m.h>
 #include <inet/transportlayer/contract/udp/UdpControlInfo_m.h>
 #include <oqs/oqs.h>
 #include <openssl/aes.h>
+#include <iomanip>
+#include <cstring>
+#include <chrono>
+#include <iostream>
+#include <x86intrin.h>
+
+using namespace omnetpp;
+using namespace inet;
 
 Define_Module(LTEApp);
 
@@ -35,8 +38,16 @@ LTEApp::~LTEApp()
 void LTEApp::initialize(int stage)
 {
     ApplicationBase::initialize(stage);
+
     if (stage == INITSTAGE_LOCAL) {
+        // Initialize member variables
         selfMsg = new cMessage("start");
+        localPort = par("localPort");
+        destPort = par("destPort");
+    }
+    else if (stage == INITSTAGE_APPLICATION_LAYER) {
+        // Schedule the start of the application after all initialization stages
+        scheduleAt(simTime() + par("startTime").doubleValue(), selfMsg);
     }
 }
 
@@ -44,93 +55,86 @@ void LTEApp::handleMessageWhenUp(cMessage *msg)
 {
     if (msg->isSelfMessage()) {
         processStart();
-        delete msg; // Don't forget to delete the self-message
+        delete msg; // Delete the self-message
     } else {
         socket.processMessage(msg);
     }
 }
 
-
-// ... (rest of your methods, such as handleMessageWhenUp, processStart, etc.)
-
-
 void LTEApp::processStart()
 {
+    // Retrieve and print destAddr parameter
+    const char* destAddrStr = par("destAddr").stringValue();
+    EV_INFO << "processStart() called in " << getParentModule()->getFullName() << ". destAddr: " << destAddrStr << endl;
+
+    // Convert the destAddr string to L3Address
+    destAddr = L3Address(destAddrStr);
+
+    if (destAddr.isUnspecified()) {
+        EV_ERROR << "Failed to parse destAddr: " << destAddrStr << endl;
+        throw cRuntimeError("Failed to parse destAddr: %s", destAddrStr);
+    }
+
     // Initialize the socket
     socket.setCallback(this);
     socket.setOutputGate(gate("socketOut"));
-    socket.bind(1000); // Bind to local port 1000
+    socket.bind(localPort);
 
-    // Send public key if nodeA
-    const char* nodeName = getParentModule()->getName();
-    if (strcmp(nodeName, "ueA") == 0) {
+    // Get the full name of the node
+    std::string nodeName = getParentModule()->getFullName();
+
+    // If this is ueA, send the public key
+    if (nodeName == "ueA") {
         sendPublicKey();
     }
 }
 
 void LTEApp::sendPublicKey()
 {
-    // Similar to your previous sendPublicKey implementation
-    // Generate key pair, send public key over UDP socket
+    // Initialize Kyber KEM
     OQS_KEM *kem = OQS_KEM_new("Kyber512");
     if (!kem)
         throw cRuntimeError("Failed to initialize Kyber512 KEM");
 
+    // Allocate memory for keys
     publicKey = new uint8_t[kem->length_public_key];
     secretKey = new uint8_t[kem->length_secret_key];
 
-    const char* nodeName = getParentModule()->getName();
-
-    // Measure time and clock cycles for keypair generation
-    auto start_time = std::chrono::high_resolution_clock::now();
-    unsigned long long start_cycles = __rdtsc();
-
+    // Generate key pair
     if (OQS_KEM_keypair(kem, publicKey, secretKey) != OQS_SUCCESS)
         throw cRuntimeError("Failed to generate Kyber512 key pair");
 
-    unsigned long long end_cycles = __rdtsc();
-    auto end_time = std::chrono::high_resolution_clock::now();
-    auto duration_time = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count();
-    unsigned long long cycles = end_cycles - start_cycles;
+    // Log key generation
+    EV_INFO << "Generated Kyber512 key pair.\n";
 
-    // Print time taken and clock cycles
-    EV << nodeName << " generated Kyber512 key pair in " << duration_time << " microseconds.\n";
-    EV << nodeName << " key pair generation took " << cycles << " CPU cycles.\n";
-
-    // Print sizes
-    EV << "Public key size: " << kem->length_public_key << " bytes.\n";
-    EV << "Secret key size: " << kem->length_secret_key << " bytes.\n";
-    EV << "Shared secret size: " << kem->length_shared_secret << " bytes.\n";
-
-    EV << nodeName << " generated Kyber512 key pair.\n";
-    EV << nodeName << "'s public key: " << formatHex(publicKey, kem->length_public_key) << "\n";
-
-    // Send public key to ueB
+    // Create a packet with the public key
     Packet *packet = new Packet("PublicKey");
     auto payload = makeShared<BytesChunk>(publicKey, kem->length_public_key);
     packet->insertAtBack(payload);
 
-    // Set UDP destination address and port
-    L3AddressResolver resolver;
-    L3Address destAddr = resolver.resolve("ueB");
-    socket.sendTo(packet, destAddr, 1000); // Send to port 1000
+    // Send the packet
+    EV_INFO << destAddr<<endl;
+    EV_INFO << destPort<<endl;
+    socket.sendTo(packet, destAddr, destPort);
 
+    // Free KEM resources
     OQS_KEM_free(kem);
 }
 
 void LTEApp::socketDataArrived(UdpSocket *socket, Packet *packet)
 {
-    const char* nodeName = getParentModule()->getName();
-    EV << nodeName << " received a packet: " << packet->getName() << endl;
+    std::string nodeName = getParentModule()->getFullName();
+    EV_INFO << nodeName << " received a packet: " << packet->getName() << endl;
 
     const auto& payload = packet->peekData<BytesChunk>();
     size_t payloadSize = payload->getChunkLength().get();
 
-    if (strcmp(nodeName, "ueB") == 0 && strcmp(packet->getName(), "PublicKey") == 0) {
-        // Process public key, generate shared secret, send ciphertext
+    if (nodeName == "ueB" && strcmp(packet->getName(), "PublicKey") == 0) {
+        // Node B processes public key
         uint8_t *receivedPublicKey = new uint8_t[payloadSize];
         memcpy(receivedPublicKey, payload->getBytes().data(), payloadSize);
 
+        // Initialize Kyber KEM
         OQS_KEM *kem = OQS_KEM_new("Kyber512");
         if (!kem)
             throw cRuntimeError("Failed to initialize Kyber512 KEM");
@@ -138,77 +142,56 @@ void LTEApp::socketDataArrived(UdpSocket *socket, Packet *packet)
         uint8_t *ciphertext = new uint8_t[kem->length_ciphertext];
         sharedSecret = new uint8_t[kem->length_shared_secret];
 
-        // Measure time and clock cycles for encapsulation
-        auto start_time = std::chrono::high_resolution_clock::now();
-        unsigned long long start_cycles = __rdtsc();
-
+        // Encapsulate shared secret
         if (OQS_KEM_encaps(kem, ciphertext, sharedSecret, receivedPublicKey) != OQS_SUCCESS)
             throw cRuntimeError("Failed to encapsulate shared secret");
-
-        unsigned long long end_cycles = __rdtsc();
-        auto end_time = std::chrono::high_resolution_clock::now();
-        auto duration_time = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count();
-        unsigned long long cycles = end_cycles - start_cycles;
-
-        // Print time taken and clock cycles
-        EV << nodeName << " encapsulated shared secret in " << duration_time << " microseconds.\n";
-        EV << nodeName << " encapsulation took " << cycles << " CPU cycles.\n";
 
         // Send ciphertext back to ueA
         Packet *respPacket = new Packet("Ciphertext");
         auto respPayload = makeShared<BytesChunk>(ciphertext, kem->length_ciphertext);
         respPacket->insertAtBack(respPayload);
 
-        // Set UDP destination address and port
-        L3AddressResolver resolver;
-        L3Address destAddr = resolver.resolve("ueA");
-        socket->sendTo(respPacket, destAddr, 1000);
+        socket->sendTo(respPacket, destAddr, destPort);
 
+        // Free resources
         OQS_KEM_free(kem);
+        delete[] receivedPublicKey;
+        delete[] ciphertext;
 
-        // Schedule sending encrypted data
-        cMessage *sendDataMsg = new cMessage("sendEncryptedData");
-        scheduleAt(simTime() + 1, sendDataMsg);
+        // Proceed to send encrypted data
+        sendEncryptedData();
 
-    } else if (strcmp(nodeName, "ueA") == 0 && strcmp(packet->getName(), "Ciphertext") == 0) {
-        // Process ciphertext, derive shared secret
+    }
+    else if (nodeName == "ueA" && strcmp(packet->getName(), "Ciphertext") == 0) {
+        // Node A processes ciphertext
         uint8_t *receivedCiphertext = new uint8_t[payloadSize];
         memcpy(receivedCiphertext, payload->getBytes().data(), payloadSize);
 
+        // Initialize Kyber KEM
         OQS_KEM *kem = OQS_KEM_new("Kyber512");
         if (!kem)
             throw cRuntimeError("Failed to initialize Kyber512 KEM");
 
         sharedSecret = new uint8_t[kem->length_shared_secret];
 
-        // Measure time and clock cycles for decapsulation
-        auto start_time = std::chrono::high_resolution_clock::now();
-        unsigned long long start_cycles = __rdtsc();
-
+        // Decapsulate shared secret
         if (OQS_KEM_decaps(kem, sharedSecret, receivedCiphertext, secretKey) != OQS_SUCCESS)
             throw cRuntimeError("Failed to decapsulate shared secret");
 
-        unsigned long long end_cycles = __rdtsc();
-        auto end_time = std::chrono::high_resolution_clock::now();
-        auto duration_time = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count();
-        unsigned long long cycles = end_cycles - start_cycles;
-
-        EV << nodeName << " decapsulated shared secret in " << duration_time << " microseconds.\n";
-        EV << nodeName << " decapsulation took " << cycles << " CPU cycles.\n";
-
+        // Free resources
         OQS_KEM_free(kem);
+        delete[] receivedCiphertext;
 
-        // Schedule sending encrypted data
-        cMessage *sendDataMsg = new cMessage("sendEncryptedData");
-        scheduleAt(simTime() + 1, sendDataMsg);
-
-    } else if (strcmp(packet->getName(), "EncryptedData") == 0) {
+        // Proceed to send encrypted data
+        sendEncryptedData();
+    }
+    else if (strcmp(packet->getName(), "EncryptedData") == 0) {
         // Decrypt data
-        const char* nodeName = getParentModule()->getName();
         size_t dataLen = payloadSize;
         unsigned char *receivedEncryptedData = new unsigned char[dataLen];
         memcpy(receivedEncryptedData, payload->getBytes().data(), dataLen);
 
+        // Decrypt using AES
         AES_KEY aesKey;
         if (AES_set_decrypt_key(sharedSecret, 256, &aesKey) < 0)
             throw cRuntimeError("Failed to set AES decryption key");
@@ -219,17 +202,63 @@ void LTEApp::socketDataArrived(UdpSocket *socket, Packet *packet)
         AES_cbc_encrypt(receivedEncryptedData, decryptedData, dataLen, &aesKey, iv, AES_DECRYPT);
 
         // Output decrypted data
-        EV << nodeName << " received decrypted data: " << decryptedData << endl;
+        EV_INFO << nodeName << " received decrypted data: " << decryptedData << endl;
 
+        // Clean up
         delete[] decryptedData;
+        delete[] receivedEncryptedData;
     }
 
     delete packet;
 }
 
+void LTEApp::sendEncryptedData()
+{
+    std::string nodeName = getParentModule()->getFullName();
+
+    if (!sharedSecret) {
+        EV_ERROR << nodeName << " has no shared secret established. Cannot send encrypted data." << endl;
+        return;
+    }
+
+    // Prepare the plaintext message
+    std::string plainText = "Secret Message from " + nodeName;
+
+    // Pad plaintext to AES block size
+    size_t paddedLen = ((plainText.size() + AES_BLOCK_SIZE - 1) / AES_BLOCK_SIZE) * AES_BLOCK_SIZE;
+    unsigned char *plainData = new unsigned char[paddedLen];
+    memset(plainData, 0, paddedLen);
+    memcpy(plainData, plainText.c_str(), plainText.size());
+
+    // AES encryption using the shared secret
+    AES_KEY aesKey;
+    if (AES_set_encrypt_key(sharedSecret, 256, &aesKey) < 0) {
+        throw cRuntimeError("Failed to set AES encryption key");
+    }
+
+    unsigned char *encryptedData = new unsigned char[paddedLen];
+    unsigned char iv[AES_BLOCK_SIZE] = {0};
+
+    AES_cbc_encrypt(plainData, encryptedData, paddedLen, &aesKey, iv, AES_ENCRYPT);
+
+    // Create the packet to send the encrypted data
+    Packet *encPacket = new Packet("EncryptedData");
+    auto payload = makeShared<BytesChunk>(encryptedData, paddedLen);
+    encPacket->insertAtBack(payload);
+
+    // Send the encrypted message to the other node
+    socket.sendTo(encPacket, destAddr, destPort);
+
+    EV_INFO << nodeName << " sent encrypted data at time " << simTime() << endl;
+
+    // Clean up
+    delete[] plainData;
+    delete[] encryptedData;
+}
+
 void LTEApp::handleStartOperation(LifecycleOperation *operation)
 {
-    scheduleAt(simTime() + uniform(0, 1), selfMsg); // Schedule self-message to start
+    // No additional actions needed here
 }
 
 void LTEApp::handleStopOperation(LifecycleOperation *operation)
@@ -246,55 +275,10 @@ void LTEApp::handleCrashOperation(LifecycleOperation *operation)
     selfMsg = nullptr;
 }
 
-void LTEApp::sendEncryptedData()
-{
-    const char* nodeName = getParentModule()->getName();
-
-    if (!sharedSecret) {
-        EV << nodeName << " has no shared secret established. Cannot send encrypted data." << endl;
-        return;
-    }
-
-    // Prepare the plaintext message
-    std::string plainText = "Secret Message from " + std::string(nodeName);
-
-    // Pad plaintext to AES block size
-    size_t paddedLen = ((plainText.size() + AES_BLOCK_SIZE - 1) / AES_BLOCK_SIZE) * AES_BLOCK_SIZE;
-    unsigned char *plainData = new unsigned char[paddedLen];
-    memset(plainData, 0, paddedLen);
-    memcpy(plainData, plainText.c_str(), plainText.size());
-
-    // AES encryption using the shared secret
-    AES_KEY aesKey;
-    if (AES_set_encrypt_key(sharedSecret, 256, &aesKey) < 0) {
-        throw cRuntimeError("Failed to set AES encryption key");
-    }
-
-    unsigned char *encryptedData = new unsigned char[paddedLen];
-    unsigned char iv[AES_BLOCK_SIZE] = {0}; // Initialization vector (should be random in practice)
-
-    AES_cbc_encrypt(plainData, encryptedData, paddedLen, &aesKey, iv, AES_ENCRYPT);
-
-    // Create the packet to send the encrypted data
-    Packet *encPacket = new Packet("EncryptedData");
-    auto payload = makeShared<BytesChunk>(encryptedData, paddedLen);
-    encPacket->insertAtBack(payload);
-
-    // Send the encrypted message to the other node
-    L3AddressResolver resolver;
-    L3Address destAddr = resolver.resolve(strcmp(nodeName, "ueA") == 0 ? "ueB" : "ueA");
-    socket.sendTo(encPacket, destAddr, 1000);
-
-    EV << nodeName << " sent encrypted data at time " << simTime() << endl;
-
-    // Clean up
-    delete[] plainData;
-    delete[] encryptedData;
-}
-
 void LTEApp::finish()
 {
     ApplicationBase::finish();
+    // Clean up dynamically allocated memory
     delete[] publicKey;
     delete[] secretKey;
     delete[] sharedSecret;

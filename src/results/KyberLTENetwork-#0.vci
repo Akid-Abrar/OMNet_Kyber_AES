@@ -1,0 +1,29 @@
+file 805 1731462299                                             
+version 2
+run KyberLTENetwork-0-20241113-01:44:54-70966
+attr configname KyberLTENetwork
+attr datetime 20241113-01:44:54
+attr experiment KyberLTENetwork
+attr inifile omnetpp.ini
+attr iterationvars ""
+attr iterationvarsf ""
+attr measurement ""
+attr network KyberLTENetwork
+attr processid 70966
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+
+vector 0 KyberLTENetwork.ueA.udp packetSent:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSent
+attr title "packets sent, vector(packetBytes)"
+vector 1 KyberLTENetwork.ueA.ipv4.ip packetDropNoRouteFound:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsNoRouteFound(packetDropped)
+attr title "packet drop: no route found, vector(packetBytes)"
+0	784 10 4 4 1 1 1 808 808 808 652864
+1	794 10 6 6 1 1 1 828 828 828 685584
+

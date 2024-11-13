@@ -4,7 +4,7 @@
 #include <omnetpp.h>
 #include <inet/applications/base/ApplicationBase.h>
 #include <inet/transportlayer/contract/udp/UdpSocket.h>
-#include <inet/networklayer/common/L3AddressResolver.h>
+#include <inet/networklayer/common/L3Address.h>
 
 using namespace omnetpp;
 using namespace inet;
@@ -12,6 +12,7 @@ using namespace inet;
 class LTEApp : public ApplicationBase, public UdpSocket::ICallback
 {
   protected:
+    // Member variables
     UdpSocket socket;
     cMessage *selfMsg = nullptr;
 

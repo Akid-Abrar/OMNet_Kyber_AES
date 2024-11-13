@@ -22,12 +22,19 @@ network KyberLTENetwork
         }
         ueA: LTE_Node {
             @display("p=100,200");
-            app[0].destNode = "ueB"; // Set destination node for ueA
+            interfaces[0].ipv4.address = "10.0.0.1";
+            interfaces[0].ipv4.netmask = "255.255.255.0";
+            app[0].destAddr = "10.0.0.2";
+            app[0].startTime = 1s;
         }
         ueB: LTE_Node {
             @display("p=500,200");
-            app[0].destNode = "ueA"; // Set destination node for ueB
+            interfaces[0].ipv4.address = "10.0.0.2";
+            interfaces[0].ipv4.netmask = "255.255.255.0";
+            app[0].destAddr = "10.0.0.1";
+            app[0].startTime = 1s;
         }
     connections allowunconnected:
         // No wired connections; communication is over wireless LTE
 }
+

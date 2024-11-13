@@ -45,9 +45,6 @@
   /home/veins/src/inet/src/inet/transportlayer/contract/udp/UdpControlInfo_m.h \
   /home/veins/src/inet/src/inet/networklayer/common/IpProtocolId_m.h \
   /home/veins/src/inet/src/inet/networklayer/common/L3Address_m.h \
-  /home/veins/src/inet/src/inet/networklayer/common/L3AddressResolver.h \
-  /home/veins/src/inet/src/inet/networklayer/contract/IRoutingTable.h \
-  /home/veins/src/inet/src/inet/networklayer/contract/IRoute.h \
   /home/veins/src/inet/src/inet/applications/common/SocketTag_m.h \
   /home/veins/src/inet/src/inet/common/TagBase_m.h \
   /home/veins/liboqs/install/include/oqs/oqs.h \
@@ -168,12 +165,6 @@ LTEApp.h:
 /home/veins/src/inet/src/inet/networklayer/common/IpProtocolId_m.h:
 
 /home/veins/src/inet/src/inet/networklayer/common/L3Address_m.h:
-
-/home/veins/src/inet/src/inet/networklayer/common/L3AddressResolver.h:
-
-/home/veins/src/inet/src/inet/networklayer/contract/IRoutingTable.h:
-
-/home/veins/src/inet/src/inet/networklayer/contract/IRoute.h:
 
 /home/veins/src/inet/src/inet/applications/common/SocketTag_m.h:
 
