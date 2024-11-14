@@ -2,10 +2,14 @@
 #include <cstring>
 #include <iomanip>
 #include <sstream>
+#include <chrono>
+#include <iostream>
+#include <x86intrin.h>  // For __rdtsc()
 
 Define_Module(Ethernet_Node);
 
 size_t kyber_key_length;
+const char* kyberVariant = "Kyber1024";
 
 // Remove unnecessary comments
 void Ethernet_Node::initialize()
@@ -22,18 +26,33 @@ void Ethernet_Node::sendPublickKey()
 {
     // Node A: Generate key pair and send public key
     EV << "here\n";
-    OQS_KEM *kem = OQS_KEM_new("Kyber512");
-    if (!kem) error("Failed to initialize Kyber512 KEM");
+    OQS_KEM *kem = OQS_KEM_new(kyberVariant);
+    if (!kem) error("Failed to initialize Kyber KEM");
 
     publicKey = new uint8_t[kem->length_public_key];
     secretKey = new uint8_t[kem->length_secret_key];
 
     const char* nodeName = getName();
+    // Measure time and clock cycles for keypair generation
+    auto start_time = std::chrono::high_resolution_clock::now();
+    unsigned long long start_cycles = __rdtsc();
 
     if (OQS_KEM_keypair(kem, publicKey, secretKey) != OQS_SUCCESS)
-        error("Failed to generate Kyber512 key pair");
+        error("Failed to generate Kyber key pair");
+    unsigned long long end_cycles = __rdtsc();
+    auto end_time = std::chrono::high_resolution_clock::now();
+    auto duration_time = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count();
+    unsigned long long cycles = end_cycles - start_cycles;
 
-    EV << nodeName << " generated Kyber512 key pair for Ethernet.\n";
+    // Print time taken and clock cycles
+    EV << nodeName << " generated Kyber key pair in " << duration_time << " microseconds.\n";
+    EV << nodeName << " key pair generation took " << cycles << " CPU cycles.\n";
+
+    // Print sizes
+    EV << "Public key size: " << kem->length_public_key << " bytes.\n";
+    EV << "Secret key size: " << kem->length_secret_key << " bytes.\n";
+
+    EV << nodeName << " generated Kyber key pair for Ethernet.\n";
     EV << nodeName << "'s public key: " << formatHex(publicKey, kem->length_public_key) << "\n";
     kyber_key_length = kem->length_public_key;
     bubble("Generated key pair");
@@ -49,6 +68,7 @@ void Ethernet_Node::sendPublickKey()
         msg->setPayload(i, static_cast<char>(publicKey[i]));
     }
 
+    msg->setTimestamp(simTime());
     // Send the message through the correct output gate
     send(msg, "port$o", 0); // Use the appropriate gate index
 
@@ -97,6 +117,7 @@ void Ethernet_Node::sendEncryptedData()
         encMsg->setPayload(i, static_cast<int>(encryptedData[i]));
     }
 
+    encMsg->setTimestamp(simTime());
     // Send the encrypted message to the other node
     send(encMsg, "port$o", 0); // Use the appropriate gate index
 
@@ -128,6 +149,13 @@ void Ethernet_Node::handleMessage(cMessage *msg)
         }
         return;
     }
+    // In handleMessage(), after receiving the message
+    simtime_t delay = simTime() - kMsg->getTimestamp();
+    EV << "Communication delay: " << delay << " seconds.\n";
+    // In handleMessage()
+    int packetSizeBits = kMsg->getBitLength();
+    EV << "Packet size: " << packetSizeBits << " bits (" << packetSizeBits / 8 << " bytes).\n";
+
 
     size_t payloadSize = kMsg->getPayloadArraySize();
     if (strcmp(nodeName, "nodeB") == 0 && kMsg->getMsgType() == 0) {
@@ -145,14 +173,32 @@ void Ethernet_Node::handleMessage(cMessage *msg)
 
         EV << "Public key: " << formatHex(receivedPublicKey, kyber_key_length) << endl;
 
-        OQS_KEM *kem = OQS_KEM_new("Kyber512");
-        if (!kem) error("Failed to initialize Kyber512 KEM");
+        OQS_KEM *kem = OQS_KEM_new(kyberVariant);
+        if (!kem) error("Failed to initialize Kyber KEM");
 
         uint8_t *ciphertext = new uint8_t[kem->length_ciphertext];
         sharedSecret = new uint8_t[kem->length_shared_secret];
 
+        // Measure time and clock cycles for encapsulation
+        auto start_time = std::chrono::high_resolution_clock::now();
+        unsigned long long start_cycles = __rdtsc();
+
+
         if (OQS_KEM_encaps(kem, ciphertext, sharedSecret, receivedPublicKey) != OQS_SUCCESS)
             error("Failed to encapsulate shared secret");
+
+        unsigned long long end_cycles = __rdtsc();
+        auto end_time = std::chrono::high_resolution_clock::now();
+        auto duration_time = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count();
+        unsigned long long cycles = end_cycles - start_cycles;
+
+        // Print time taken and clock cycles
+        EV << nodeName << " encapsulated shared secret in " << duration_time << " microseconds.\n";
+        EV << nodeName << " encapsulation took " << cycles << " CPU cycles.\n";
+
+        // Print sizes
+        EV << "Ciphertext size: " << kem->length_ciphertext << " bytes.\n";
+        EV << "Shared secret size: " << kem->length_shared_secret << " bytes.\n";
 
         EV << nodeName << "'s shared secret: " << formatHex(sharedSecret, kem->length_shared_secret) << "\n";
 
@@ -186,13 +232,28 @@ void Ethernet_Node::handleMessage(cMessage *msg)
             receivedCiphertext[i] = static_cast<uint8_t>(kMsg->getPayload(i));
         }
 
-        OQS_KEM *kem = OQS_KEM_new("Kyber512");
-        if (!kem) error("Failed to initialize Kyber512 KEM");
+        OQS_KEM *kem = OQS_KEM_new(kyberVariant);
+        if (!kem) error("Failed to initialize Kyber KEM");
 
         sharedSecret = new uint8_t[kem->length_shared_secret];
 
+        // Measure time and clock cycles for decapsulation
+        auto start_time = std::chrono::high_resolution_clock::now();
+        unsigned long long start_cycles = __rdtsc();
+
         if (OQS_KEM_decaps(kem, sharedSecret, receivedCiphertext, secretKey) != OQS_SUCCESS)
             error("Failed to decapsulate shared secret");
+
+        unsigned long long end_cycles = __rdtsc();
+        auto end_time = std::chrono::high_resolution_clock::now();
+        auto duration_time = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count();
+        unsigned long long cycles = end_cycles - start_cycles;
+
+        EV << nodeName << " decapsulated shared secret in " << duration_time << " microseconds.\n";
+        EV << nodeName << " decapsulation took " << cycles << " CPU cycles.\n";
+
+        // Print sizes
+        EV << "Shared secret size: " << kem->length_shared_secret << " bytes.\n";
 
         EV << nodeName << " decapsulated shared secret.\n";
         EV << nodeName << "'s shared secret: " << formatHex(sharedSecret, kem->length_shared_secret) << "\n";

@@ -1,29 +1,317 @@
-file 805 1731462299                                             
+file 20818 1731560173                                           
 version 2
-run KyberLTENetwork-0-20241113-01:44:54-70966
+run KyberLTENetwork-0-20241114-04:55:21-103899
 attr configname KyberLTENetwork
-attr datetime 20241113-01:44:54
+attr datetime 20241114-04:55:21
 attr experiment KyberLTENetwork
 attr inifile omnetpp.ini
 attr iterationvars ""
 attr iterationvarsf ""
 attr measurement ""
 attr network KyberLTENetwork
-attr processid 70966
+attr processid 103899
 attr repetition 0
 attr replication #0
 attr resultdir results
 attr runnumber 0
 attr seedset 0
 
-vector 0 KyberLTENetwork.ueA.udp packetSent:vector(packetBytes) ETV
+vector 0 KyberLTENetwork.ueA.wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 1 KyberLTENetwork.ueA.wlan[0].radio radioChannel:vector ETV
+attr interpolationmode sample-hold
+attr source radioChannelChanged
+attr title "Radio channel, vector"
+vector 2 KyberLTENetwork.ueB.wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 3 KyberLTENetwork.ueB.wlan[0].radio radioChannel:vector ETV
+attr interpolationmode sample-hold
+attr source radioChannelChanged
+attr title "Radio channel, vector"
+vector 4 KyberLTENetwork.ueA.wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 5 KyberLTENetwork.ueB.wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 6 KyberLTENetwork.ueA.wlan[0].mac.dcf.recoveryProcedure contentionWindowChanged:vector ETV
+attr interpolationmode sample-hold
+attr title "contention window, vector"
+vector 7 KyberLTENetwork.ueB.wlan[0].mac.dcf.recoveryProcedure contentionWindowChanged:vector ETV
+attr interpolationmode sample-hold
+attr title "contention window, vector"
+vector 8 KyberLTENetwork.ueA.udp packetSent:vector(packetBytes) ETV
 attr interpolationmode none
 attr source packetSent
 attr title "packets sent, vector(packetBytes)"
-vector 1 KyberLTENetwork.ueA.ipv4.ip packetDropNoRouteFound:vector(packetBytes) ETV
+vector 9 KyberLTENetwork.ueA.ipv4.arp arpRequestSent:vector(packetBytes) ETV
+attr source arpRequestSent
+attr title "ARP request sent, vector(packetBytes)"
+vector 10 KyberLTENetwork.ueA.wlan[0].mac packetReceivedFromUpper:vector(packetBytes) ETV
 attr interpolationmode none
-attr source packetDropReasonIsNoRouteFound(packetDropped)
-attr title "packet drop: no route found, vector(packetBytes)"
-0	784 10 4 4 1 1 1 808 808 808 652864
-1	794 10 6 6 1 1 1 828 828 828 685584
+attr title "packets received from upper layer, vector(packetBytes)"
+vector 11 KyberLTENetwork.ueA.wlan[0].mac.dcf.channelAccess.pendingQueue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 12 KyberLTENetwork.ueA.wlan[0].mac.dcf.channelAccess.pendingQueue queueLength:vector ETV
+attr interpolationmode sample-hold
+attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
+attr title "queue length, vector"
+vector 13 KyberLTENetwork.ueA.wlan[0].mac.dcf.channelAccess.contention backoffPeriodGenerated:vector ETV
+attr interpolationmode none
+attr title "backoff periods, vector"
+vector 14 KyberLTENetwork.ueA.wlan[0].mac.dcf.channelAccess.contention backoffActive:vector ETV
+attr interpolationmode sample-hold
+attr source count(backoffStarted)-count(backoffStopped)
+attr title "backoff active, vector"
+vector 15 KyberLTENetwork.ueA.wlan[0].mac.dcf.channelAccess.pendingQueue packetPopped:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet popped, vector(packetBytes)"
+vector 16 KyberLTENetwork.ueA.wlan[0].mac.dcf.channelAccess.pendingQueue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPopped)
+attr title "queueing times, vector"
+attr unit s
+vector 17 KyberLTENetwork.ueA.wlan[0].mac.dcf.channelAccess.inProgressFrames queueLength:vector ETV
+attr interpolationmode sample-hold
+attr source "count(packetEnqueued) - count(packetDequeued)"
+attr title "queue length, vector"
+vector 18 KyberLTENetwork.ueA.wlan[0].mac.dcf datarateSelected:vector ETV
+attr interpolationmode none
+attr title "datarates selected, vector"
+vector 19 KyberLTENetwork.ueA.wlan[0].mac packetSentToLower:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets sent to lower layer, vector(packetBytes)"
+vector 20 KyberLTENetwork.ueA.wlan[0].mac.dcf frameSequenceActive:vector ETV
+attr interpolationmode sample-hold
+attr source count(frameSequenceStarted)-count(frameSequenceFinished)
+attr title "frame sequence active, vector"
+vector 21 KyberLTENetwork.ueA.wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 22 KyberLTENetwork.ueA.wlan[0].mac.dcf packetSentToPeer:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets sent, vector(packetBytes)"
+vector 23 KyberLTENetwork.ueA.wlan[0].mac.dcf packetSentToPeerMulticast:vector(packetBytes) ETV
+attr interpolationmode none
+attr source ieee80211Multicast(packetSentToPeer)
+attr title "packets sent: multicast, vector(packetBytes)"
+vector 24 KyberLTENetwork.ueA.wlan[0].mac.dcf packetSentToPeerBroadcast:vector(packetBytes) ETV
+attr interpolationmode none
+attr source ieee80211Broadcast(packetSentToPeer)
+attr title "packets sent: broadcast , vector(packetBytes)"
+vector 25 KyberLTENetwork.ueA.wlan[0].mac.dcf packetSentToPeerWithoutRetry:vector(packetBytes) ETV
+attr interpolationmode none
+attr source ieee80211NotRetry(packetSentToPeer)
+attr title "packets sent: without retry, vector(packetBytes)"
+vector 26 KyberLTENetwork.ueA.wlan[0].mac.dcf.channelAccess.inProgressFrames queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetDequeued)
+attr title "queueing times, vector"
+vector 27 KyberLTENetwork.ueB.wlan[0].mac packetReceivedFromLower:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets received from lower layer, vector(packetBytes)"
+vector 28 KyberLTENetwork.ueB.wlan[0].mac.dcf packetReceivedFromPeer:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets received, vector(packetBytes)"
+vector 29 KyberLTENetwork.ueB.wlan[0].mac.dcf packetReceivedFromPeerMulticast:vector(packetBytes) ETV
+attr interpolationmode none
+attr source ieee80211Multicast(packetReceivedFromPeer)
+attr title "packets received: multicast, vector(packetBytes)"
+vector 30 KyberLTENetwork.ueB.wlan[0].mac.dcf packetReceivedFromPeerBroadcast:vector(packetBytes) ETV
+attr interpolationmode none
+attr source ieee80211Broadcast(packetReceivedFromPeer)
+attr title "packets received: broadcast, vector(packetBytes)"
+vector 31 KyberLTENetwork.ueB.wlan[0].mac.dcf packetReceivedFromPeerWithoutRetry:vector(packetBytes) ETV
+attr interpolationmode none
+attr source ieee80211NotRetry(packetReceivedFromPeer)
+attr title "packets received: without retry, vector(packetBytes)"
+vector 32 KyberLTENetwork.ueB.wlan[0].mac packetSentToUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets sent to upper layer, vector(packetBytes)"
+vector 33 KyberLTENetwork.ueB.ipv4.arp arpReplySent:vector(packetBytes) ETV
+attr source arpReplySent
+attr title "ARP replies sent, vector(packetBytes)"
+vector 34 KyberLTENetwork.ueB.wlan[0].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets received from upper layer, vector(packetBytes)"
+vector 35 KyberLTENetwork.ueB.wlan[0].mac.dcf.channelAccess.pendingQueue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 36 KyberLTENetwork.ueB.wlan[0].mac.dcf.channelAccess.pendingQueue queueLength:vector ETV
+attr interpolationmode sample-hold
+attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
+attr title "queue length, vector"
+vector 37 KyberLTENetwork.ueB.wlan[0].mac.dcf.channelAccess.contention backoffPeriodGenerated:vector ETV
+attr interpolationmode none
+attr title "backoff periods, vector"
+vector 38 KyberLTENetwork.ueB.wlan[0].mac.dcf.channelAccess.contention backoffActive:vector ETV
+attr interpolationmode sample-hold
+attr source count(backoffStarted)-count(backoffStopped)
+attr title "backoff active, vector"
+vector 39 KyberLTENetwork.ueB.wlan[0].mac.dcf.channelAccess.pendingQueue packetPopped:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet popped, vector(packetBytes)"
+vector 40 KyberLTENetwork.ueB.wlan[0].mac.dcf.channelAccess.pendingQueue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPopped)
+attr title "queueing times, vector"
+attr unit s
+vector 41 KyberLTENetwork.ueB.wlan[0].mac.dcf.channelAccess.inProgressFrames queueLength:vector ETV
+attr interpolationmode sample-hold
+attr source "count(packetEnqueued) - count(packetDequeued)"
+attr title "queue length, vector"
+vector 42 KyberLTENetwork.ueB.wlan[0].mac.dcf datarateSelected:vector ETV
+attr interpolationmode none
+attr title "datarates selected, vector"
+vector 43 KyberLTENetwork.ueB.wlan[0].mac packetSentToLower:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets sent to lower layer, vector(packetBytes)"
+vector 44 KyberLTENetwork.ueB.wlan[0].mac.dcf frameSequenceActive:vector ETV
+attr interpolationmode sample-hold
+attr source count(frameSequenceStarted)-count(frameSequenceFinished)
+attr title "frame sequence active, vector"
+vector 45 KyberLTENetwork.ueB.wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 46 KyberLTENetwork.ueB.wlan[0].mac.dcf packetSentToPeer:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets sent, vector(packetBytes)"
+vector 47 KyberLTENetwork.ueB.wlan[0].mac.dcf packetSentToPeerUnicast:vector(packetBytes) ETV
+attr interpolationmode none
+attr source ieee80211Unicast(packetSentToPeer)
+attr title "packets sent: unicast, vector(packetBytes)"
+vector 48 KyberLTENetwork.ueB.wlan[0].mac.dcf packetSentToPeerWithoutRetry:vector(packetBytes) ETV
+attr interpolationmode none
+attr source ieee80211NotRetry(packetSentToPeer)
+attr title "packets sent: without retry, vector(packetBytes)"
+vector 49 KyberLTENetwork.ueB.wlan[0].mac.rx nav:vector ETV
+attr interpolationmode linear
+attr source navChanged
+attr title "network allocation vector, vector"
+vector 50 KyberLTENetwork.ueA.wlan[0].mac packetReceivedFromLower:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets received from lower layer, vector(packetBytes)"
+vector 51 KyberLTENetwork.ueA.wlan[0].mac.dcf packetReceivedFromPeer:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets received, vector(packetBytes)"
+vector 52 KyberLTENetwork.ueA.wlan[0].mac.dcf packetReceivedFromPeerUnicast:vector(packetBytes) ETV
+attr interpolationmode none
+attr source ieee80211Unicast(packetReceivedFromPeer)
+attr title "packets received: unicast, vector(packetBytes)"
+vector 53 KyberLTENetwork.ueA.wlan[0].mac.dcf packetReceivedFromPeerWithoutRetry:vector(packetBytes) ETV
+attr interpolationmode none
+attr source ieee80211NotRetry(packetReceivedFromPeer)
+attr title "packets received: without retry, vector(packetBytes)"
+vector 54 KyberLTENetwork.ueA.wlan[0].mac packetSentToUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets sent to upper layer, vector(packetBytes)"
+vector 55 KyberLTENetwork.ueA.wlan[0].mac.dcf packetSentToPeerUnicast:vector(packetBytes) ETV
+attr interpolationmode none
+attr source ieee80211Unicast(packetSentToPeer)
+attr title "packets sent: unicast, vector(packetBytes)"
+vector 56 KyberLTENetwork.ueB.wlan[0].mac.dcf packetReceivedFromPeerUnicast:vector(packetBytes) ETV
+attr interpolationmode none
+attr source ieee80211Unicast(packetReceivedFromPeer)
+attr title "packets received: unicast, vector(packetBytes)"
+vector 57 KyberLTENetwork.ueB.wlan[0].mac.dcf.channelAccess.inProgressFrames queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetDequeued)
+attr title "queueing times, vector"
+vector 58 KyberLTENetwork.ueA.wlan[0].mac.rx nav:vector ETV
+attr interpolationmode linear
+attr source navChanged
+attr title "network allocation vector, vector"
+vector 59 KyberLTENetwork.ueB.udp packetReceived:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceived
+attr title "packets received, vector(packetBytes)"
+vector 60 KyberLTENetwork.ueB.udp passedUpPk:vector(count) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed up, vector(count)"
+vector 61 KyberLTENetwork.ueB.udp packetSent:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSent
+attr title "packets sent, vector(packetBytes)"
+vector 62 KyberLTENetwork.ueA.udp packetReceived:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceived
+attr title "packets received, vector(packetBytes)"
+vector 63 KyberLTENetwork.ueA.udp passedUpPk:vector(count) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed up, vector(count)"
+0	12853 272 0 128 0 1.002402005536 15 0 3 32 82
+1	13125 8 0 0 0 0 1 0 0 0 0
+2	13133 246 0 141 0 1.002447339792 13 0 3 27 69
+3	13379 8 0 0 0 0 1 0 0 0 0
+4	13387 480 0 142 0 1.002448674048 23 0 3 27 57
+5	13867 496 0 141 0 1.002447339792 23 0 3 30 66
+6	14363 9 0 0 0 0 1 31 31 31 961
+7	14372 9 0 0 0 0 1 31 31 31 961
+8	14381 33 4 87 1 1.001667337024 2 40 808 848 654464
+9	14414 9 6 6 1 1 1 28 28 28 784
+10	14423 59 8 90 1 1.001667337024 3 36 836 940 704816
+11	14482 59 8 90 1 1.001667337024 3 64 864 1024 759808
+12	14541 112 8 123 1 1.002340005536 6 0 1 3 3
+13	14653 56 8 90 1 1.001667337024 3 3 21 33 531
+14	14709 299 8 122 1 1.002340005536 14 0 1 7 7
+15	15008 61 10 123 1 1.002340005536 3 64 864 1024 759808
+16	15069 77 10 123 1 1.002340005536 3 0 0.000672668512 0.000946668512 5.2755892703629e-07
+17	15146 120 10 143 1 1.002448674048 6 0 1 3 3
+18	15266 169 10 123 1 1.002340005536 6 24000000 24000000 144000000 3.456e+15
+19	15435 134 10 123 1 1.002340005536 6 14 864 1066 760396
+20	15569 120 10 143 1 1.002448674048 6 0 1 3 3
+21	15689 520 11 128 1 1.002402005536 24 0 2 24 36
+22	16209 140 14 127 1.00005 1.002402005536 6 14 864 1066 760396
+23	16349 17 14 14 1.00005 1.00005 1 64 64 64 4096
+24	16366 17 14 14 1.00005 1.00005 1 64 64 64 4096
+25	16383 140 14 127 1.00005 1.002402005536 6 14 864 1066 760396
+26	16523 93 14 143 1.00005 1.002448674048 3 5e-05 0.000364668512 0.000523337024 1.4729196914459e-07
+27	16616 146 17 130 1.000051334256 1.002403339792 6 14 864 1066 760396
+28	16762 146 17 130 1.000051334256 1.002403339792 6 14 864 1066 760396
+29	16908 24 17 17 1.000051334256 1.000051334256 1 64 64 64 4096
+30	16932 24 17 17 1.000051334256 1.000051334256 1 64 64 64 4096
+31	16956 146 17 130 1.000051334256 1.002403339792 6 14 864 1066 760396
+32	17102 74 17 130 1.000051334256 1.002403339792 3 36 836 940 704816
+33	17176 24 19 19 1.000051334256 1.000051334256 1 28 28 28 784
+34	17200 73 21 64 1.000051334256 1.000886002768 3 36 804 908 652336
+35	17273 73 21 64 1.000051334256 1.000886002768 3 64 832 992 705536
+36	17346 138 21 75 1.000051334256 1.001360002768 6 0 2 5 7
+37	17484 70 21 99 1.000051334256 1.00171267128 3 7 19 44 734
+38	17554 183 21 100 1.000051334256 1.00212267128 8 0 1 4 4
+39	17737 73 23 75 1.000241334256 1.001360002768 3 64 832 992 705536
+40	17810 89 23 75 1.000241334256 1.001360002768 3 0.00019 0.000474 0.001138 4.85452e-07
+41	17899 138 23 121 1.000241334256 1.002231339792 6 0 2 5 7
+42	18037 151 23 130 1.000241334256 1.002403339792 5 24000000 24000000 120000000 2.88e+15
+43	18188 122 23 135 1.000241334256 1.002413339792 5 14 832 1020 705928
+44	18310 138 23 121 1.000241334256 1.002231339792 6 0 1 3 3
+45	18448 464 24 141 1.000241334256 1.002447339792 20 0 2 20 30
+46	18912 122 27 140 1.000291334256 1.002447339792 5 14 832 1020 705928
+47	19034 122 27 140 1.000291334256 1.002447339792 5 14 832 1020 705928
+48	19156 122 27 140 1.000291334256 1.002447339792 5 14 832 1020 705928
+49	19278 225 27 117 1.000291334256 1.00222867128 9 0 4.4e-05 0.000132 5.808e-09
+50	19503 123 30 143 1.000292668512 1.002448674048 5 14 832 1020 705928
+51	19626 123 30 143 1.000292668512 1.002448674048 5 14 832 1020 705928
+52	19749 123 30 143 1.000292668512 1.002448674048 5 14 832 1020 705928
+53	19872 123 30 143 1.000292668512 1.002448674048 5 14 832 1020 705928
+54	19995 74 30 108 1.000292668512 1.002186005536 3 36 804 908 652336
+55	20069 123 40 127 1.000336668512 1.002402005536 5 14 864 1002 756300
+56	20192 122 43 130 1.000338002768 1.002403339792 5 14 864 1002 756300
+57	20314 107 43 121 1.000338002768 1.002231339792 3 9.6668512e-05 0.000871337024 0.001320674048 8.9294808996176e-07
+58	20421 153 49 139 1.000884668512 1.002446005536 6 0 4.4e-05 8.8e-05 3.872e-09
+59	20574 50 55 133 1.000886002768 1.002403339792 2 40 808 848 654464
+60	20624 47 55 133 1.000886002768 1.002403339792 2 1 2 3 5
+61	20671 49 57 58 1.000886002768 1.000886002768 2 40 776 816 603776
+62	20720 50 85 111 1.001667337024 1.002186005536 2 40 776 816 603776
+63	20770 47 85 111 1.001667337024 1.002186005536 2 1 2 3 5
 

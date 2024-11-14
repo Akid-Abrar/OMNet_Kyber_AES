@@ -30,6 +30,7 @@ class LTEApp : public ApplicationBase, public UdpSocket::ICallback
     virtual void initialize(int stage) override;
     virtual void handleMessageWhenUp(cMessage *msg) override;
     virtual void finish() override;
+    virtual void handleMessage(cMessage *msg) override;
 
     // Lifecycle methods
     virtual void handleStartOperation(LifecycleOperation *operation) override;

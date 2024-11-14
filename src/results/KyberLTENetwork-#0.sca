@@ -1,20 +1,39 @@
 version 2
-run KyberLTENetwork-0-20241113-01:44:54-70966
+run KyberLTENetwork-0-20241114-04:55:21-103899
 attr configname KyberLTENetwork
-attr datetime 20241113-01:44:54
+attr datetime 20241114-04:55:21
 attr experiment KyberLTENetwork
 attr inifile omnetpp.ini
 attr iterationvars ""
 attr iterationvarsf ""
 attr measurement ""
 attr network KyberLTENetwork
-attr processid 70966
+attr processid 103899
 attr repetition 0
 attr replication #0
 attr resultdir results
 attr runnumber 0
 attr seedset 0
 
+scalar KyberLTENetwork.radioMedium.propagation "Arrival computation count" 11
+scalar KyberLTENetwork.radioMedium "transmission count" 11
+scalar KyberLTENetwork.radioMedium "signal send count" 11
+scalar KyberLTENetwork.radioMedium "reception computation count" 11
+scalar KyberLTENetwork.radioMedium "interference computation count" 46
+scalar KyberLTENetwork.radioMedium "reception decision computation count" 11
+scalar KyberLTENetwork.radioMedium "listening decision computation count" 24
+scalar KyberLTENetwork.radioMedium "reception cache hit" 85.714285714286
+attr unit %
+scalar KyberLTENetwork.radioMedium "interference cache hit" 66.666666666667
+attr unit %
+scalar KyberLTENetwork.radioMedium "noise cache hit" 0
+attr unit %
+scalar KyberLTENetwork.radioMedium "snir cache hit" 50
+attr unit %
+scalar KyberLTENetwork.radioMedium "reception decision cache hit" 50
+attr unit %
+scalar KyberLTENetwork.radioMedium "reception result cache hit" 0
+attr unit %
 scalar KyberLTENetwork.ueA.lo[0].lo rcvdPkFromHl:count 0
 attr interpolationmode none
 attr source packetReceivedFromUpper
@@ -31,6 +50,829 @@ scalar KyberLTENetwork.ueA.lo[0].lo passedUpPk:sum(packetBytes) 0
 attr interpolationmode none
 attr source packetSentToUpper
 attr title "packets passed to higher layer, sum(packetBytes)"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf.channelAccess.pendingQueue packetPopped:count 3
+attr interpolationmode none
+attr title "packet popped, count"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf.channelAccess.pendingQueue packetPopped:sum(packetBytes) 1024
+attr interpolationmode none
+attr title "packet popped, sum(packetBytes)"
+statistic KyberLTENetwork.ueA.wlan[0].mac.dcf.channelAccess.pendingQueue queueingTime:histogram
+field count 3
+field mean 0.00031555617066667
+field stddev 0.00033825422133276
+field min 0
+field max 0.000672668512
+field sum 0.000946668512
+field sqrsum 5.2755892703629e-07
+attr interpolationmode none
+attr source queueingTime(packetPopped)
+attr title "queueing times, histogram"
+attr unit s
+bin	-inf	0
+bin	0	1
+bin	1e-05	0
+bin	2e-05	0
+bin	3e-05	0
+bin	4e-05	0
+bin	5e-05	0
+bin	6e-05	0
+bin	7e-05	0
+bin	8e-05	0
+bin	9e-05	0
+bin	0.0001	0
+bin	0.00011	0
+bin	0.00012	0
+bin	0.00013	0
+bin	0.00014	0
+bin	0.00015	0
+bin	0.00016	0
+bin	0.00017	0
+bin	0.00018	0
+bin	0.00019	0
+bin	0.0002	0
+bin	0.00021	0
+bin	0.00022	0
+bin	0.00023	0
+bin	0.00024	0
+bin	0.00025	0
+bin	0.00026	0
+bin	0.00027	1
+bin	0.00028	0
+bin	0.00029	0
+bin	0.0003	0
+bin	0.00031	0
+bin	0.00032	0
+bin	0.00033	0
+bin	0.00034	0
+bin	0.00035	0
+bin	0.00036	0
+bin	0.00037	0
+bin	0.00038	0
+bin	0.00039	0
+bin	0.0004	0
+bin	0.00041	0
+bin	0.00042	0
+bin	0.00043	0
+bin	0.00044	0
+bin	0.00045	0
+bin	0.00046	0
+bin	0.00047	0
+bin	0.00048	0
+bin	0.00049	0
+bin	0.0005	0
+bin	0.00051	0
+bin	0.00052	0
+bin	0.00053	0
+bin	0.00054	0
+bin	0.00055	0
+bin	0.00056	0
+bin	0.00057	0
+bin	0.00058	0
+bin	0.00059	0
+bin	0.0006	0
+bin	0.00061	0
+bin	0.00062	0
+bin	0.00063	0
+bin	0.00064	0
+bin	0.00065	0
+bin	0.00066	0
+bin	0.00067	1
+bin	0.00068	0
+bin	0.00069	0
+bin	0.0007	0
+bin	0.00071	0
+bin	0.00072	0
+bin	0.00073	0
+bin	0.00074	0
+bin	0.00075	0
+bin	0.00076	0
+bin	0.00077	0
+bin	0.00078	0
+bin	0.00079	0
+bin	0.0008	0
+bin	0.00081	0
+bin	0.00082	0
+bin	0.00083	0
+bin	0.00084	0
+bin	0.00085	0
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf.channelAccess.pendingQueue queueLength:max 1
+attr interpolationmode sample-hold
+attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
+attr title "queue length, max"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf.channelAccess.pendingQueue queueLength:timeavg 1.8937157671534e-07
+attr interpolationmode sample-hold
+attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
+attr title "queue length, timeavg"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf.channelAccess.pendingQueue packetPushed:count 3
+attr interpolationmode none
+attr title "packet pushed, count"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf.channelAccess.pendingQueue packetPushed:sum(packetBytes) 1024
+attr interpolationmode none
+attr title "packet pushed, sum(packetBytes)"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf.channelAccess.pendingQueue packetDropQueueOverflow:count 0
+attr interpolationmode none
+attr source packetDropReasonIsQueueOverflow(packetDropped)
+attr title "packet drops: queue overflow, count"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf.channelAccess.pendingQueue packetDropQueueOverflow:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsQueueOverflow(packetDropped)
+attr title "packet drops: queue overflow, sum(packetBytes)"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf.channelAccess.pendingQueue packetRemoved:count 0
+attr interpolationmode none
+attr title "packets removed, count"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf.channelAccess.pendingQueue packetRemoved:sum(packetBytes) 0
+attr interpolationmode none
+attr title "packets removed, sum(packetBytes)"
+statistic KyberLTENetwork.ueA.wlan[0].mac.dcf.channelAccess.inProgressFrames queueingTime:histogram
+field count 3
+field mean 0.00017444567466667
+field stddev 0.00016732915005292
+field min 5e-05
+field max 0.000364668512
+field sum 0.000523337024
+field sqrsum 1.4729196914459e-07
+attr interpolationmode none
+attr source queueingTime(packetDequeued)
+attr title "queueing times, histogram"
+bin	-inf	0
+bin	0	0
+bin	5e-06	0
+bin	1e-05	0
+bin	1.5e-05	0
+bin	2e-05	0
+bin	2.5e-05	0
+bin	3e-05	0
+bin	3.5e-05	0
+bin	4e-05	0
+bin	4.5e-05	1
+bin	5e-05	0
+bin	5.5e-05	0
+bin	6e-05	0
+bin	6.5e-05	0
+bin	7e-05	0
+bin	7.5e-05	0
+bin	8e-05	0
+bin	8.5e-05	0
+bin	9e-05	0
+bin	9.5e-05	0
+bin	0.0001	0
+bin	0.000105	1
+bin	0.00011	0
+bin	0.000115	0
+bin	0.00012	0
+bin	0.000125	0
+bin	0.00013	0
+bin	0.000135	0
+bin	0.00014	0
+bin	0.000145	0
+bin	0.00015	0
+bin	0.000155	0
+bin	0.00016	0
+bin	0.000165	0
+bin	0.00017	0
+bin	0.000175	0
+bin	0.00018	0
+bin	0.000185	0
+bin	0.00019	0
+bin	0.000195	0
+bin	0.0002	0
+bin	0.000205	0
+bin	0.00021	0
+bin	0.000215	0
+bin	0.00022	0
+bin	0.000225	0
+bin	0.00023	0
+bin	0.000235	0
+bin	0.00024	0
+bin	0.000245	0
+bin	0.00025	0
+bin	0.000255	0
+bin	0.00026	0
+bin	0.000265	0
+bin	0.00027	0
+bin	0.000275	0
+bin	0.00028	0
+bin	0.000285	0
+bin	0.00029	0
+bin	0.000295	0
+bin	0.0003	0
+bin	0.000305	0
+bin	0.00031	0
+bin	0.000315	0
+bin	0.00032	0
+bin	0.000325	0
+bin	0.00033	0
+bin	0.000335	0
+bin	0.00034	0
+bin	0.000345	0
+bin	0.00035	0
+bin	0.000355	0
+bin	0.00036	1
+bin	0.000365	0
+bin	0.00037	0
+bin	0.000375	0
+bin	0.00038	0
+bin	0.000385	0
+bin	0.00039	0
+bin	0.000395	0
+bin	0.0004	0
+bin	0.000405	0
+bin	0.00041	0
+bin	0.000415	0
+bin	0.00042	0
+bin	0.000425	0
+bin	0.00043	0
+bin	0.000435	0
+bin	0.00044	0
+bin	0.000445	0
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf.channelAccess.inProgressFrames queueLength:max 1
+attr interpolationmode sample-hold
+attr source "count(packetEnqueued) - count(packetDequeued)"
+attr title "queue length, max"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf.channelAccess.inProgressFrames queueLength:timeavg 1.0468834246849e-07
+attr interpolationmode sample-hold
+attr source "count(packetEnqueued) - count(packetDequeued)"
+attr title "queue length, timeavg"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf.channelAccess.contention channelAccessGranted:count 3
+attr title "channel access granted, count"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf.channelAccess.contention stateChanged:count 50
+attr interpolationmode none
+attr title "contention state changed, count"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf.channelAccess channelOwnershipChanged:count 6
+attr interpolationmode sample-hold
+attr title "channel ownership, count"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf.originatorMacDataService packetAggregated:count 0
+attr title "packets aggregated, count"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf.originatorMacDataService packetFragmented:count 0
+attr title "packets fragmented, count"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf.recipientMacDataService packetDeaggregated:count 0
+attr title "packets deaggregated, count"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf.recipientMacDataService packetDefragmented:count 3
+attr title "packets defragmented, count"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf.recipientMacDataService packetDropDuplicateDetected:count 0
+attr interpolationmode none
+attr source packetDropReasonIsDuplicateDetected(packetDropped)
+attr title "packet drops: duplicate detected, count"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf.recipientMacDataService packetDropDuplicateDetected:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsDuplicateDetected(packetDropped)
+attr title "packet drops: duplicate detected, sum(packetBytes)"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf.recoveryProcedure retryLimitReached:count 0
+attr title "retry limit reached, count"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf frameSequenceFinished:count 3
+attr title "finished frame sequences, count"
+statistic KyberLTENetwork.ueA.wlan[0].mac.dcf frameSequenceDuration:histogram
+field count 3
+field mean 0.00017444567466667
+field stddev 0.00016732915005292
+field min 5e-05
+field max 0.000364668512
+field sum 0.000523337024
+field sqrsum 1.4729196914459e-07
+attr source frameSequenceDuration(frameSequenceFinished)
+attr title "frame sequence durations, histogram"
+bin	-inf	0
+bin	0	0
+bin	5e-06	0
+bin	1e-05	0
+bin	1.5e-05	0
+bin	2e-05	0
+bin	2.5e-05	0
+bin	3e-05	0
+bin	3.5e-05	0
+bin	4e-05	0
+bin	4.5e-05	1
+bin	5e-05	0
+bin	5.5e-05	0
+bin	6e-05	0
+bin	6.5e-05	0
+bin	7e-05	0
+bin	7.5e-05	0
+bin	8e-05	0
+bin	8.5e-05	0
+bin	9e-05	0
+bin	9.5e-05	0
+bin	0.0001	0
+bin	0.000105	1
+bin	0.00011	0
+bin	0.000115	0
+bin	0.00012	0
+bin	0.000125	0
+bin	0.00013	0
+bin	0.000135	0
+bin	0.00014	0
+bin	0.000145	0
+bin	0.00015	0
+bin	0.000155	0
+bin	0.00016	0
+bin	0.000165	0
+bin	0.00017	0
+bin	0.000175	0
+bin	0.00018	0
+bin	0.000185	0
+bin	0.00019	0
+bin	0.000195	0
+bin	0.0002	0
+bin	0.000205	0
+bin	0.00021	0
+bin	0.000215	0
+bin	0.00022	0
+bin	0.000225	0
+bin	0.00023	0
+bin	0.000235	0
+bin	0.00024	0
+bin	0.000245	0
+bin	0.00025	0
+bin	0.000255	0
+bin	0.00026	0
+bin	0.000265	0
+bin	0.00027	0
+bin	0.000275	0
+bin	0.00028	0
+bin	0.000285	0
+bin	0.00029	0
+bin	0.000295	0
+bin	0.0003	0
+bin	0.000305	0
+bin	0.00031	0
+bin	0.000315	0
+bin	0.00032	0
+bin	0.000325	0
+bin	0.00033	0
+bin	0.000335	0
+bin	0.00034	0
+bin	0.000345	0
+bin	0.00035	0
+bin	0.000355	0
+bin	0.00036	1
+bin	0.000365	0
+bin	0.00037	0
+bin	0.000375	0
+bin	0.00038	0
+bin	0.000385	0
+bin	0.00039	0
+bin	0.000395	0
+bin	0.0004	0
+bin	0.000405	0
+bin	0.00041	0
+bin	0.000415	0
+bin	0.00042	0
+bin	0.000425	0
+bin	0.00043	0
+bin	0.000435	0
+bin	0.00044	0
+bin	0.000445	0
+statistic KyberLTENetwork.ueA.wlan[0].mac.dcf frameSequenceNumPackets:histogram
+field count 3
+field mean 1.6666666666667
+field stddev 0.57735026918963
+field min 1
+field max 2
+field sum 5
+field sqrsum 9
+attr source frameSequenceNumPackets(frameSequenceFinished)
+attr title "frame sequences: number of packets, histogram"
+bin	-inf	0
+bin	0	0
+bin	1	1
+bin	2	2
+bin	3	0
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf packetReceivedFromPeer:count 5
+attr interpolationmode none
+attr title "packets received, count"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf packetReceivedFromPeer:sum(packetBytes) 1020
+attr interpolationmode none
+attr title "packets received, sum(packetBytes)"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf packetReceivedFromPeerUnicast:count 5
+attr interpolationmode none
+attr source ieee80211Unicast(packetReceivedFromPeer)
+attr title "packets received: unicast, count"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf packetReceivedFromPeerUnicast:sum(packetBytes) 1020
+attr interpolationmode none
+attr source ieee80211Unicast(packetReceivedFromPeer)
+attr title "packets received: unicast, sum(packetBytes)"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf packetReceivedFromPeerMulticast:count 0
+attr interpolationmode none
+attr source ieee80211Multicast(packetReceivedFromPeer)
+attr title "packets received: multicast, count"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf packetReceivedFromPeerMulticast:sum(packetBytes) 0
+attr interpolationmode none
+attr source ieee80211Multicast(packetReceivedFromPeer)
+attr title "packets received: multicast, sum(packetBytes)"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf packetReceivedFromPeerBroadcast:count 0
+attr interpolationmode none
+attr source ieee80211Broadcast(packetReceivedFromPeer)
+attr title "packets received: broadcast, count"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf packetReceivedFromPeerBroadcast:sum(packetBytes) 0
+attr interpolationmode none
+attr source ieee80211Broadcast(packetReceivedFromPeer)
+attr title "packets received: broadcast, sum(packetBytes)"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf packetReceivedFromPeerWithRetry:count 0
+attr interpolationmode none
+attr source ieee80211Retry(packetReceivedFromPeer)
+attr title "packets received: with retry, count"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf packetReceivedFromPeerWithRetry:sum(packetBytes) 0
+attr interpolationmode none
+attr source ieee80211Retry(packetReceivedFromPeer)
+attr title "packets received: with retry, sum(packetBytes)"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf packetReceivedFromPeerWithoutRetry:count 5
+attr interpolationmode none
+attr source ieee80211NotRetry(packetReceivedFromPeer)
+attr title "packets received: without retry, count"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf packetReceivedFromPeerWithoutRetry:sum(packetBytes) 1020
+attr interpolationmode none
+attr source ieee80211NotRetry(packetReceivedFromPeer)
+attr title "packets received: without retry, sum(packetBytes)"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf packetSentToPeer:count 6
+attr interpolationmode none
+attr title "packets sent, count"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf packetSentToPeer:sum(packetBytes) 1066
+attr interpolationmode none
+attr title "packets sent, sum(packetBytes)"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf packetSentToPeerUnicast:count 5
+attr interpolationmode none
+attr source ieee80211Unicast(packetSentToPeer)
+attr title "packets sent: unicast, count"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf packetSentToPeerUnicast:sum(packetBytes) 1002
+attr interpolationmode none
+attr source ieee80211Unicast(packetSentToPeer)
+attr title "packets sent: unicast, sum(packetBytes)"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf packetSentToPeerMulticast:count 1
+attr interpolationmode none
+attr source ieee80211Multicast(packetSentToPeer)
+attr title "packets sent: multicast, count"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf packetSentToPeerMulticast:sum(packetBytes) 64
+attr interpolationmode none
+attr source ieee80211Multicast(packetSentToPeer)
+attr title "packets sent: multicast, sum(packetBytes)"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf packetSentToPeerBroadcast:count 1
+attr interpolationmode none
+attr source ieee80211Broadcast(packetSentToPeer)
+attr title "packets sent: broadcast , count"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf packetSentToPeerBroadcast:sum(packetBytes) 64
+attr interpolationmode none
+attr source ieee80211Broadcast(packetSentToPeer)
+attr title "packets sent: broadcast , sum(packetBytes)"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf packetSentToPeerWithRetry:count 0
+attr interpolationmode none
+attr source ieee80211Retry(packetSentToPeer)
+attr title "packets sent: with retry, count"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf packetSentToPeerWithRetry:sum(packetBytes) 0
+attr interpolationmode none
+attr source ieee80211Retry(packetSentToPeer)
+attr title "packets sent: with retry, sum(packetBytes)"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf packetSentToPeerWithoutRetry:count 6
+attr interpolationmode none
+attr source ieee80211NotRetry(packetSentToPeer)
+attr title "packets sent: without retry, count"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf packetSentToPeerWithoutRetry:sum(packetBytes) 1066
+attr interpolationmode none
+attr source ieee80211NotRetry(packetSentToPeer)
+attr title "packets sent: without retry, sum(packetBytes)"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf packetDrop:count 0
+attr interpolationmode none
+attr source packetDropped
+attr title "packet drops, count"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf packetDrop:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropped
+attr title "packet drops, sum(packetBytes)"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf packetDropNotAddressedToUs:count 0
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drops: not addressed to us, count"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf packetDropNotAddressedToUs:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drops: not addressed to us, sum(packetBytes)"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf packetDropQueueOverflow:count 0
+attr interpolationmode none
+attr source packetDropReasonIsQueueOverflow(packetDropped)
+attr title "packet drops: queue overflow, count"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf packetDropQueueOverflow:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsQueueOverflow(packetDropped)
+attr title "packet drops: queue overflow, sum(packetBytes)"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf packetDropRetryLimitReached:count 0
+attr interpolationmode none
+attr source packetDropReasonIsRetryLimitReached(packetDropped)
+attr title "packet drops: retry limit reached, count"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf packetDropRetryLimitReached:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsRetryLimitReached(packetDropped)
+attr title "packet drops: retry limit reached, sum(packetBytes)"
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf linkBroken:count 0
+attr interpolationmode none
+attr title "link breaks, count"
+scalar KyberLTENetwork.ueA.wlan[0].mac packetReceivedFromLower:count 5
+attr interpolationmode none
+attr title "packets received from lower layer, count"
+scalar KyberLTENetwork.ueA.wlan[0].mac packetReceivedFromLower:sum(packetBytes) 1020
+attr interpolationmode none
+attr title "packets received from lower layer, sum(packetBytes)"
+scalar KyberLTENetwork.ueA.wlan[0].mac packetSentToLower:count 6
+attr interpolationmode none
+attr title "packets sent to lower layer, count"
+scalar KyberLTENetwork.ueA.wlan[0].mac packetSentToLower:sum(packetBytes) 1066
+attr interpolationmode none
+attr title "packets sent to lower layer, sum(packetBytes)"
+scalar KyberLTENetwork.ueA.wlan[0].mac packetReceivedFromUpper:count 3
+attr interpolationmode none
+attr title "packets received from upper layer, count"
+scalar KyberLTENetwork.ueA.wlan[0].mac packetReceivedFromUpper:sum(packetBytes) 940
+attr interpolationmode none
+attr title "packets received from upper layer, sum(packetBytes)"
+scalar KyberLTENetwork.ueA.wlan[0].mac packetSentToUpper:count 3
+attr interpolationmode none
+attr title "packets sent to upper layer, count"
+scalar KyberLTENetwork.ueA.wlan[0].mac packetSentToUpper:sum(packetBytes) 908
+attr interpolationmode none
+attr title "packets sent to upper layer, sum(packetBytes)"
+scalar KyberLTENetwork.ueA.wlan[0].mac packetDrop:count 0
+attr interpolationmode none
+attr source packetDropped
+attr title "packet drops, count"
+scalar KyberLTENetwork.ueA.wlan[0].mac packetDrop:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropped
+attr title "packet drops, sum(packetBytes)"
+scalar KyberLTENetwork.ueA.wlan[0].mac packetDropIncorrectlyReceived:count 0
+attr interpolationmode none
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packet drops: incorrectly received, count"
+scalar KyberLTENetwork.ueA.wlan[0].mac packetDropIncorrectlyReceived:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packet drops: incorrectly received, sum(packetBytes)"
+scalar KyberLTENetwork.ueA.wlan[0].mac packetDropNotAddressedToUs:count 0
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drops: not addressed to us, count"
+scalar KyberLTENetwork.ueA.wlan[0].mac packetDropNotAddressedToUs:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drops: not addressed to us, sum(packetBytes)"
+scalar KyberLTENetwork.ueA.wlan[0].mac packetDropQueueOverflow:count 0
+attr interpolationmode none
+attr source packetDropReasonIsQueueOverflow(packetDropped)
+attr title "packet drops: queue overflow, count"
+scalar KyberLTENetwork.ueA.wlan[0].mac packetDropQueueOverflow:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsQueueOverflow(packetDropped)
+attr title "packet drops: queue overflow, sum(packetBytes)"
+scalar KyberLTENetwork.ueA.wlan[0].mac packetDropRetryLimitReached:count 0
+attr interpolationmode none
+attr source packetDropReasonIsRetryLimitReached(packetDropped)
+attr title "packet drops: retry limit reached, count"
+scalar KyberLTENetwork.ueA.wlan[0].mac packetDropRetryLimitReached:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsRetryLimitReached(packetDropped)
+attr title "packet drops: retry limit reached, sum(packetBytes)"
+scalar KyberLTENetwork.ueA.wlan[0].mac packetDropDuplicateDetected:count 0
+attr interpolationmode none
+attr source packetDropReasonIsDuplicateDetected(packetDropped)
+attr title "packet drops: duplicate detected, count"
+scalar KyberLTENetwork.ueA.wlan[0].mac packetDropDuplicateDetected:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsDuplicateDetected(packetDropped)
+attr title "packet drops: duplicate detected, sum(packetBytes)"
+scalar KyberLTENetwork.ueA.wlan[0].mac packetDropOther:count 0
+attr interpolationmode none
+attr source packetDropReasonIsOther(packetDropped)
+attr title "packet drops: other, count"
+scalar KyberLTENetwork.ueA.wlan[0].mac packetDropOther:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsOther(packetDropped)
+attr title "packet drops: other, sum(packetBytes)"
+scalar KyberLTENetwork.ueA.wlan[0].mac linkBroken:count 0
+attr interpolationmode none
+attr title "link breaks, count"
+statistic KyberLTENetwork.ueA.wlan[0].radio radioChannel:histogram
+field count 1
+field mean 0
+field stddev -nan
+field min 0
+field max 0
+field sum 0
+field sqrsum 0
+attr interpolationmode sample-hold
+attr source radioChannelChanged
+attr title "Radio channel, histogram"
+bin	-inf	0
+bin	-0.5	0
+bin	-0.48	0
+bin	-0.46	0
+bin	-0.44	0
+bin	-0.42	0
+bin	-0.4	0
+bin	-0.38	0
+bin	-0.36	0
+bin	-0.34	0
+bin	-0.32	0
+bin	-0.3	0
+bin	-0.28	0
+bin	-0.26	0
+bin	-0.24	0
+bin	-0.22	0
+bin	-0.2	0
+bin	-0.18	0
+bin	-0.16	0
+bin	-0.14	0
+bin	-0.12	0
+bin	-0.1	0
+bin	-0.08	0
+bin	-0.06	0
+bin	-0.04	0
+bin	-0.02	0
+bin	0	1
+bin	0.02	0
+bin	0.04	0
+bin	0.06	0
+bin	0.08	0
+bin	0.1	0
+bin	0.12	0
+bin	0.14	0
+bin	0.16	0
+bin	0.18	0
+bin	0.2	0
+bin	0.22	0
+bin	0.24	0
+bin	0.26	0
+bin	0.28	0
+bin	0.3	0
+bin	0.32	0
+bin	0.34	0
+bin	0.36	0
+bin	0.38	0
+bin	0.4	0
+bin	0.42	0
+bin	0.44	0
+bin	0.46	0
+bin	0.48	0
+bin	0.5	0
+scalar KyberLTENetwork.ueA.wlan[0].radio radioMode:count 15
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, count"
+scalar KyberLTENetwork.ueA.wlan[0].radio receptionState:count 23
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, count"
+scalar KyberLTENetwork.ueA.wlan[0].radio transmissionState:count 24
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, count"
+statistic KyberLTENetwork.ueA.wlan[0].radio minSnir:histogram
+field count 5
+field mean 1222.8609700649
+field stddev 1.52587890625e-05
+field min 1222.8609700649
+field max 1222.8609700649
+field sum 6114.3048503246
+field sqrsum 7476944.7605405
+attr source minimumSnir(packetSentToUpper)
+attr title "Min SNIR, histogram"
+bin	-inf	0
+bin	1222.36	0
+bin	1222.38	0
+bin	1222.4	0
+bin	1222.42	0
+bin	1222.44	0
+bin	1222.46	0
+bin	1222.48	0
+bin	1222.5	0
+bin	1222.52	0
+bin	1222.54	0
+bin	1222.56	0
+bin	1222.58	0
+bin	1222.6	0
+bin	1222.62	0
+bin	1222.64	0
+bin	1222.66	0
+bin	1222.68	0
+bin	1222.7	0
+bin	1222.72	0
+bin	1222.74	0
+bin	1222.76	0
+bin	1222.78	0
+bin	1222.8	0
+bin	1222.82	0
+bin	1222.84	0
+bin	1222.86	5
+bin	1222.88	0
+bin	1222.9	0
+bin	1222.92	0
+bin	1222.94	0
+bin	1222.96	0
+bin	1222.98	0
+bin	1223	0
+bin	1223.02	0
+bin	1223.04	0
+bin	1223.06	0
+bin	1223.08	0
+bin	1223.1	0
+bin	1223.12	0
+bin	1223.14	0
+bin	1223.16	0
+bin	1223.18	0
+bin	1223.2	0
+bin	1223.22	0
+bin	1223.24	0
+bin	1223.26	0
+bin	1223.28	0
+bin	1223.3	0
+bin	1223.32	0
+bin	1223.34	0
+bin	1223.36	0
+bin	1223.38	0
+statistic KyberLTENetwork.ueA.wlan[0].radio packetErrorRate:histogram
+field count 5
+field mean 0
+field stddev 0
+field min 0
+field max 0
+field sum 0
+field sqrsum 0
+attr source packetErrorRate(packetSentToUpper)
+attr title "Packet error rate, histogram"
+bin	-inf	0
+bin	-0.5	0
+bin	-0.48	0
+bin	-0.46	0
+bin	-0.44	0
+bin	-0.42	0
+bin	-0.4	0
+bin	-0.38	0
+bin	-0.36	0
+bin	-0.34	0
+bin	-0.32	0
+bin	-0.3	0
+bin	-0.28	0
+bin	-0.26	0
+bin	-0.24	0
+bin	-0.22	0
+bin	-0.2	0
+bin	-0.18	0
+bin	-0.16	0
+bin	-0.14	0
+bin	-0.12	0
+bin	-0.1	0
+bin	-0.08	0
+bin	-0.06	0
+bin	-0.04	0
+bin	-0.02	0
+bin	0	5
+bin	0.02	0
+bin	0.04	0
+bin	0.06	0
+bin	0.08	0
+bin	0.1	0
+bin	0.12	0
+bin	0.14	0
+bin	0.16	0
+bin	0.18	0
+bin	0.2	0
+bin	0.22	0
+bin	0.24	0
+bin	0.26	0
+bin	0.28	0
+bin	0.3	0
+bin	0.32	0
+bin	0.34	0
+bin	0.36	0
+bin	0.38	0
+bin	0.4	0
+bin	0.42	0
+bin	0.44	0
+bin	0.46	0
+bin	0.48	0
+bin	0.5	0
+statistic KyberLTENetwork.ueA.wlan[0].radio bitErrorRate:histogram
+field count 0
+field mean -nan
+field stddev nan
+field min nan
+field max nan
+field sum 0
+field sqrsum 0
+attr source bitErrorRate(packetSentToUpper)
+attr title "Bit error rate, histogram"
+bin	-inf	0
+bin	0	0
+bin	1	0
+statistic KyberLTENetwork.ueA.wlan[0].radio symbolErrorRate:histogram
+field count 0
+field mean -nan
+field stddev nan
+field min nan
+field max nan
+field sum 0
+field sqrsum 0
+attr source symbolErrorRate(packetSentToUpper)
+attr title "Symbol error rate, histogram"
+bin	-inf	0
+bin	0	0
+bin	1	0
 scalar KyberLTENetwork.ueA.ipv4.ip packetDropAddressResolutionFailed:count 0
 attr interpolationmode none
 attr source packetDropReasonIsAddressResolutionFailed(packetDropped)
@@ -63,11 +905,11 @@ scalar KyberLTENetwork.ueA.ipv4.ip packetDropNoInterfaceFound:sum(packetBytes) 0
 attr interpolationmode none
 attr source packetDropReasonIsNoInterfaceFound(packetDropped)
 attr title "packet drop: no interface found, sum(packetBytes)"
-scalar KyberLTENetwork.ueA.ipv4.ip packetDropNoRouteFound:count 1
+scalar KyberLTENetwork.ueA.ipv4.ip packetDropNoRouteFound:count 0
 attr interpolationmode none
 attr source packetDropReasonIsNoRouteFound(packetDropped)
 attr title "packet drop: no route found, count"
-scalar KyberLTENetwork.ueA.ipv4.ip packetDropNoRouteFound:sum(packetBytes) 828
+scalar KyberLTENetwork.ueA.ipv4.ip packetDropNoRouteFound:sum(packetBytes) 0
 attr interpolationmode none
 attr source packetDropReasonIsNoRouteFound(packetDropped)
 attr title "packet drop: no route found, sum(packetBytes)"
@@ -81,9 +923,9 @@ attr source packetDropReasonIsUndefined(packetDropped)
 attr title "packet drop: undefined, sum(packetBytes)"
 scalar KyberLTENetwork.ueA.ipv4.arp arpResolutionFailed:count 0
 attr title "ARP failed resolutions, count"
-scalar KyberLTENetwork.ueA.ipv4.arp arpResolutionCompleted:count 0
+scalar KyberLTENetwork.ueA.ipv4.arp arpResolutionCompleted:count 1
 attr title "ARP completed resolutions, count"
-scalar KyberLTENetwork.ueA.ipv4.arp arpResolutionInitiated:count 0
+scalar KyberLTENetwork.ueA.ipv4.arp arpResolutionInitiated:count 1
 attr title "ARP initiated resolutions, count"
 scalar KyberLTENetwork.ueA.ipv4.arp arpReplySent:count 0
 attr source arpReplySent
@@ -91,29 +933,29 @@ attr title "ARP replies sent, count"
 scalar KyberLTENetwork.ueA.ipv4.arp arpReplySent:sum(packetBytes) 0
 attr source arpReplySent
 attr title "ARP replies sent, sum(packetBytes)"
-scalar KyberLTENetwork.ueA.ipv4.arp arpRequestSent:count 0
+scalar KyberLTENetwork.ueA.ipv4.arp arpRequestSent:count 1
 attr source arpRequestSent
 attr title "ARP request sent, count"
-scalar KyberLTENetwork.ueA.ipv4.arp arpRequestSent:sum(packetBytes) 0
+scalar KyberLTENetwork.ueA.ipv4.arp arpRequestSent:sum(packetBytes) 28
 attr source arpRequestSent
 attr title "ARP request sent, sum(packetBytes)"
-scalar KyberLTENetwork.ueA.udp packetReceived:count 0
+scalar KyberLTENetwork.ueA.udp packetReceived:count 2
 attr interpolationmode none
 attr source packetReceived
 attr title "packets received, count"
-scalar KyberLTENetwork.ueA.udp packetReceived:sum(packetBytes) 0
+scalar KyberLTENetwork.ueA.udp packetReceived:sum(packetBytes) 816
 attr interpolationmode none
 attr source packetReceived
 attr title "packets received, sum(packetBytes)"
-scalar KyberLTENetwork.ueA.udp packetSent:count 1
+scalar KyberLTENetwork.ueA.udp packetSent:count 2
 attr interpolationmode none
 attr source packetSent
 attr title "packets sent, count"
-scalar KyberLTENetwork.ueA.udp packetSent:sum(packetBytes) 808
+scalar KyberLTENetwork.ueA.udp packetSent:sum(packetBytes) 848
 attr interpolationmode none
 attr source packetSent
 attr title "packets sent, sum(packetBytes)"
-scalar KyberLTENetwork.ueA.udp passedUpPk:count 0
+scalar KyberLTENetwork.ueA.udp passedUpPk:count 2
 attr interpolationmode none
 attr source packetSentToUpper
 attr title "packets passed up, count"
@@ -141,6 +983,783 @@ scalar KyberLTENetwork.ueB.lo[0].lo passedUpPk:sum(packetBytes) 0
 attr interpolationmode none
 attr source packetSentToUpper
 attr title "packets passed to higher layer, sum(packetBytes)"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf.channelAccess.pendingQueue packetPopped:count 3
+attr interpolationmode none
+attr title "packet popped, count"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf.channelAccess.pendingQueue packetPopped:sum(packetBytes) 992
+attr interpolationmode none
+attr title "packet popped, sum(packetBytes)"
+statistic KyberLTENetwork.ueB.wlan[0].mac.dcf.channelAccess.pendingQueue queueingTime:histogram
+field count 3
+field mean 0.00037933333333333
+field stddev 0.00016396747644985
+field min 0.00019
+field max 0.000474
+field sum 0.001138
+field sqrsum 4.85452e-07
+attr interpolationmode none
+attr source queueingTime(packetPopped)
+attr title "queueing times, histogram"
+attr unit s
+bin	-inf	0
+bin	0.000115	0
+bin	0.00012	0
+bin	0.000125	0
+bin	0.00013	0
+bin	0.000135	0
+bin	0.00014	0
+bin	0.000145	0
+bin	0.00015	0
+bin	0.000155	0
+bin	0.00016	0
+bin	0.000165	0
+bin	0.00017	0
+bin	0.000175	0
+bin	0.00018	0
+bin	0.000185	1
+bin	0.00019	0
+bin	0.000195	0
+bin	0.0002	0
+bin	0.000205	0
+bin	0.00021	0
+bin	0.000215	0
+bin	0.00022	0
+bin	0.000225	0
+bin	0.00023	0
+bin	0.000235	0
+bin	0.00024	0
+bin	0.000245	0
+bin	0.00025	0
+bin	0.000255	0
+bin	0.00026	0
+bin	0.000265	0
+bin	0.00027	0
+bin	0.000275	0
+bin	0.00028	0
+bin	0.000285	0
+bin	0.00029	0
+bin	0.000295	0
+bin	0.0003	0
+bin	0.000305	0
+bin	0.00031	0
+bin	0.000315	0
+bin	0.00032	0
+bin	0.000325	0
+bin	0.00033	0
+bin	0.000335	0
+bin	0.00034	0
+bin	0.000345	0
+bin	0.00035	0
+bin	0.000355	0
+bin	0.00036	0
+bin	0.000365	0
+bin	0.00037	0
+bin	0.000375	0
+bin	0.00038	0
+bin	0.000385	0
+bin	0.00039	0
+bin	0.000395	0
+bin	0.0004	0
+bin	0.000405	0
+bin	0.00041	0
+bin	0.000415	0
+bin	0.00042	0
+bin	0.000425	0
+bin	0.00043	0
+bin	0.000435	0
+bin	0.00044	0
+bin	0.000445	0
+bin	0.00045	0
+bin	0.000455	0
+bin	0.00046	0
+bin	0.000465	0
+bin	0.00047	2
+bin	0.000475	0
+bin	0.00048	0
+bin	0.000485	0
+bin	0.00049	0
+bin	0.000495	0
+bin	0.0005	0
+bin	0.000505	0
+bin	0.00051	0
+bin	0.000515	0
+bin	0.00052	0
+bin	0.000525	0
+bin	0.00053	0
+bin	0.000535	0
+bin	0.00054	0
+bin	0.000545	0
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf.channelAccess.pendingQueue queueLength:max 2
+attr interpolationmode sample-hold
+attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
+attr title "queue length, max"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf.channelAccess.pendingQueue queueLength:timeavg 2.2764553144349e-07
+attr interpolationmode sample-hold
+attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
+attr title "queue length, timeavg"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf.channelAccess.pendingQueue packetPushed:count 3
+attr interpolationmode none
+attr title "packet pushed, count"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf.channelAccess.pendingQueue packetPushed:sum(packetBytes) 992
+attr interpolationmode none
+attr title "packet pushed, sum(packetBytes)"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf.channelAccess.pendingQueue packetDropQueueOverflow:count 0
+attr interpolationmode none
+attr source packetDropReasonIsQueueOverflow(packetDropped)
+attr title "packet drops: queue overflow, count"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf.channelAccess.pendingQueue packetDropQueueOverflow:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsQueueOverflow(packetDropped)
+attr title "packet drops: queue overflow, sum(packetBytes)"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf.channelAccess.pendingQueue packetRemoved:count 0
+attr interpolationmode none
+attr title "packets removed, count"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf.channelAccess.pendingQueue packetRemoved:sum(packetBytes) 0
+attr interpolationmode none
+attr title "packets removed, sum(packetBytes)"
+statistic KyberLTENetwork.ueB.wlan[0].mac.dcf.channelAccess.inProgressFrames queueingTime:histogram
+field count 3
+field mean 0.00044022468266667
+field stddev 0.00039468644280927
+field min 9.6668512e-05
+field max 0.000871337024
+field sum 0.001320674048
+field sqrsum 8.9294808996176e-07
+attr interpolationmode none
+attr source queueingTime(packetDequeued)
+attr title "queueing times, histogram"
+bin	-inf	0
+bin	0	0
+bin	2e-05	0
+bin	4e-05	0
+bin	6e-05	0
+bin	8e-05	1
+bin	0.0001	0
+bin	0.00012	0
+bin	0.00014	0
+bin	0.00016	0
+bin	0.00018	0
+bin	0.0002	0
+bin	0.00022	0
+bin	0.00024	0
+bin	0.00026	0
+bin	0.00028	0
+bin	0.0003	0
+bin	0.00032	0
+bin	0.00034	1
+bin	0.00036	0
+bin	0.00038	0
+bin	0.0004	0
+bin	0.00042	0
+bin	0.00044	0
+bin	0.00046	0
+bin	0.00048	0
+bin	0.0005	0
+bin	0.00052	0
+bin	0.00054	0
+bin	0.00056	0
+bin	0.00058	0
+bin	0.0006	0
+bin	0.00062	0
+bin	0.00064	0
+bin	0.00066	0
+bin	0.00068	0
+bin	0.0007	0
+bin	0.00072	0
+bin	0.00074	0
+bin	0.00076	0
+bin	0.00078	0
+bin	0.0008	0
+bin	0.00082	0
+bin	0.00084	0
+bin	0.00086	1
+bin	0.00088	0
+bin	0.0009	0
+bin	0.00092	0
+bin	0.00094	0
+bin	0.00096	0
+bin	0.00098	0
+bin	0.001	0
+bin	0.00102	0
+bin	0.00104	0
+bin	0.00106	0
+bin	0.00108	0
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf.channelAccess.inProgressFrames queueLength:max 2
+attr interpolationmode sample-hold
+attr source "count(packetEnqueued) - count(packetDequeued)"
+attr title "queue length, max"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf.channelAccess.inProgressFrames queueLength:timeavg 2.6418765988348e-07
+attr interpolationmode sample-hold
+attr source "count(packetEnqueued) - count(packetDequeued)"
+attr title "queue length, timeavg"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf.channelAccess.contention channelAccessGranted:count 3
+attr title "channel access granted, count"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf.channelAccess.contention stateChanged:count 46
+attr interpolationmode none
+attr title "contention state changed, count"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf.channelAccess channelOwnershipChanged:count 6
+attr interpolationmode sample-hold
+attr title "channel ownership, count"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf.originatorMacDataService packetAggregated:count 0
+attr title "packets aggregated, count"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf.originatorMacDataService packetFragmented:count 0
+attr title "packets fragmented, count"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf.recipientMacDataService packetDeaggregated:count 0
+attr title "packets deaggregated, count"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf.recipientMacDataService packetDefragmented:count 3
+attr title "packets defragmented, count"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf.recipientMacDataService packetDropDuplicateDetected:count 0
+attr interpolationmode none
+attr source packetDropReasonIsDuplicateDetected(packetDropped)
+attr title "packet drops: duplicate detected, count"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf.recipientMacDataService packetDropDuplicateDetected:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsDuplicateDetected(packetDropped)
+attr title "packet drops: duplicate detected, sum(packetBytes)"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf.recoveryProcedure retryLimitReached:count 0
+attr title "retry limit reached, count"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf frameSequenceFinished:count 3
+attr title "finished frame sequences, count"
+statistic KyberLTENetwork.ueB.wlan[0].mac.dcf frameSequenceDuration:histogram
+field count 3
+field mean 0.00018600184533333
+field stddev 0.00014446222112834
+field min 9.6668512e-05
+field max 0.000352668512
+field sum 0.000558005536
+field sqrsum 1.4552872606888e-07
+attr source frameSequenceDuration(frameSequenceFinished)
+attr title "frame sequence durations, histogram"
+bin	-inf	0
+bin	3e-05	0
+bin	3.5e-05	0
+bin	4e-05	0
+bin	4.5e-05	0
+bin	5e-05	0
+bin	5.5e-05	0
+bin	6e-05	0
+bin	6.5e-05	0
+bin	7e-05	0
+bin	7.5e-05	0
+bin	8e-05	0
+bin	8.5e-05	0
+bin	9e-05	0
+bin	9.5e-05	1
+bin	0.0001	0
+bin	0.000105	1
+bin	0.00011	0
+bin	0.000115	0
+bin	0.00012	0
+bin	0.000125	0
+bin	0.00013	0
+bin	0.000135	0
+bin	0.00014	0
+bin	0.000145	0
+bin	0.00015	0
+bin	0.000155	0
+bin	0.00016	0
+bin	0.000165	0
+bin	0.00017	0
+bin	0.000175	0
+bin	0.00018	0
+bin	0.000185	0
+bin	0.00019	0
+bin	0.000195	0
+bin	0.0002	0
+bin	0.000205	0
+bin	0.00021	0
+bin	0.000215	0
+bin	0.00022	0
+bin	0.000225	0
+bin	0.00023	0
+bin	0.000235	0
+bin	0.00024	0
+bin	0.000245	0
+bin	0.00025	0
+bin	0.000255	0
+bin	0.00026	0
+bin	0.000265	0
+bin	0.00027	0
+bin	0.000275	0
+bin	0.00028	0
+bin	0.000285	0
+bin	0.00029	0
+bin	0.000295	0
+bin	0.0003	0
+bin	0.000305	0
+bin	0.00031	0
+bin	0.000315	0
+bin	0.00032	0
+bin	0.000325	0
+bin	0.00033	0
+bin	0.000335	0
+bin	0.00034	0
+bin	0.000345	0
+bin	0.00035	1
+bin	0.000355	0
+bin	0.00036	0
+bin	0.000365	0
+bin	0.00037	0
+bin	0.000375	0
+bin	0.00038	0
+bin	0.000385	0
+bin	0.00039	0
+bin	0.000395	0
+bin	0.0004	0
+bin	0.000405	0
+bin	0.00041	0
+bin	0.000415	0
+bin	0.00042	0
+statistic KyberLTENetwork.ueB.wlan[0].mac.dcf frameSequenceNumPackets:histogram
+field count 3
+field mean 2
+field stddev 0
+field min 2
+field max 2
+field sum 6
+field sqrsum 12
+attr source frameSequenceNumPackets(frameSequenceFinished)
+attr title "frame sequences: number of packets, histogram"
+bin	-inf	0
+bin	1	0
+bin	2	3
+bin	3	0
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf packetReceivedFromPeer:count 6
+attr interpolationmode none
+attr title "packets received, count"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf packetReceivedFromPeer:sum(packetBytes) 1066
+attr interpolationmode none
+attr title "packets received, sum(packetBytes)"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf packetReceivedFromPeerUnicast:count 5
+attr interpolationmode none
+attr source ieee80211Unicast(packetReceivedFromPeer)
+attr title "packets received: unicast, count"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf packetReceivedFromPeerUnicast:sum(packetBytes) 1002
+attr interpolationmode none
+attr source ieee80211Unicast(packetReceivedFromPeer)
+attr title "packets received: unicast, sum(packetBytes)"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf packetReceivedFromPeerMulticast:count 1
+attr interpolationmode none
+attr source ieee80211Multicast(packetReceivedFromPeer)
+attr title "packets received: multicast, count"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf packetReceivedFromPeerMulticast:sum(packetBytes) 64
+attr interpolationmode none
+attr source ieee80211Multicast(packetReceivedFromPeer)
+attr title "packets received: multicast, sum(packetBytes)"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf packetReceivedFromPeerBroadcast:count 1
+attr interpolationmode none
+attr source ieee80211Broadcast(packetReceivedFromPeer)
+attr title "packets received: broadcast, count"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf packetReceivedFromPeerBroadcast:sum(packetBytes) 64
+attr interpolationmode none
+attr source ieee80211Broadcast(packetReceivedFromPeer)
+attr title "packets received: broadcast, sum(packetBytes)"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf packetReceivedFromPeerWithRetry:count 0
+attr interpolationmode none
+attr source ieee80211Retry(packetReceivedFromPeer)
+attr title "packets received: with retry, count"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf packetReceivedFromPeerWithRetry:sum(packetBytes) 0
+attr interpolationmode none
+attr source ieee80211Retry(packetReceivedFromPeer)
+attr title "packets received: with retry, sum(packetBytes)"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf packetReceivedFromPeerWithoutRetry:count 6
+attr interpolationmode none
+attr source ieee80211NotRetry(packetReceivedFromPeer)
+attr title "packets received: without retry, count"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf packetReceivedFromPeerWithoutRetry:sum(packetBytes) 1066
+attr interpolationmode none
+attr source ieee80211NotRetry(packetReceivedFromPeer)
+attr title "packets received: without retry, sum(packetBytes)"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf packetSentToPeer:count 5
+attr interpolationmode none
+attr title "packets sent, count"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf packetSentToPeer:sum(packetBytes) 1020
+attr interpolationmode none
+attr title "packets sent, sum(packetBytes)"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf packetSentToPeerUnicast:count 5
+attr interpolationmode none
+attr source ieee80211Unicast(packetSentToPeer)
+attr title "packets sent: unicast, count"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf packetSentToPeerUnicast:sum(packetBytes) 1020
+attr interpolationmode none
+attr source ieee80211Unicast(packetSentToPeer)
+attr title "packets sent: unicast, sum(packetBytes)"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf packetSentToPeerMulticast:count 0
+attr interpolationmode none
+attr source ieee80211Multicast(packetSentToPeer)
+attr title "packets sent: multicast, count"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf packetSentToPeerMulticast:sum(packetBytes) 0
+attr interpolationmode none
+attr source ieee80211Multicast(packetSentToPeer)
+attr title "packets sent: multicast, sum(packetBytes)"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf packetSentToPeerBroadcast:count 0
+attr interpolationmode none
+attr source ieee80211Broadcast(packetSentToPeer)
+attr title "packets sent: broadcast , count"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf packetSentToPeerBroadcast:sum(packetBytes) 0
+attr interpolationmode none
+attr source ieee80211Broadcast(packetSentToPeer)
+attr title "packets sent: broadcast , sum(packetBytes)"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf packetSentToPeerWithRetry:count 0
+attr interpolationmode none
+attr source ieee80211Retry(packetSentToPeer)
+attr title "packets sent: with retry, count"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf packetSentToPeerWithRetry:sum(packetBytes) 0
+attr interpolationmode none
+attr source ieee80211Retry(packetSentToPeer)
+attr title "packets sent: with retry, sum(packetBytes)"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf packetSentToPeerWithoutRetry:count 5
+attr interpolationmode none
+attr source ieee80211NotRetry(packetSentToPeer)
+attr title "packets sent: without retry, count"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf packetSentToPeerWithoutRetry:sum(packetBytes) 1020
+attr interpolationmode none
+attr source ieee80211NotRetry(packetSentToPeer)
+attr title "packets sent: without retry, sum(packetBytes)"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf packetDrop:count 0
+attr interpolationmode none
+attr source packetDropped
+attr title "packet drops, count"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf packetDrop:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropped
+attr title "packet drops, sum(packetBytes)"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf packetDropNotAddressedToUs:count 0
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drops: not addressed to us, count"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf packetDropNotAddressedToUs:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drops: not addressed to us, sum(packetBytes)"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf packetDropQueueOverflow:count 0
+attr interpolationmode none
+attr source packetDropReasonIsQueueOverflow(packetDropped)
+attr title "packet drops: queue overflow, count"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf packetDropQueueOverflow:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsQueueOverflow(packetDropped)
+attr title "packet drops: queue overflow, sum(packetBytes)"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf packetDropRetryLimitReached:count 0
+attr interpolationmode none
+attr source packetDropReasonIsRetryLimitReached(packetDropped)
+attr title "packet drops: retry limit reached, count"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf packetDropRetryLimitReached:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsRetryLimitReached(packetDropped)
+attr title "packet drops: retry limit reached, sum(packetBytes)"
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf linkBroken:count 0
+attr interpolationmode none
+attr title "link breaks, count"
+scalar KyberLTENetwork.ueB.wlan[0].mac packetReceivedFromLower:count 6
+attr interpolationmode none
+attr title "packets received from lower layer, count"
+scalar KyberLTENetwork.ueB.wlan[0].mac packetReceivedFromLower:sum(packetBytes) 1066
+attr interpolationmode none
+attr title "packets received from lower layer, sum(packetBytes)"
+scalar KyberLTENetwork.ueB.wlan[0].mac packetSentToLower:count 5
+attr interpolationmode none
+attr title "packets sent to lower layer, count"
+scalar KyberLTENetwork.ueB.wlan[0].mac packetSentToLower:sum(packetBytes) 1020
+attr interpolationmode none
+attr title "packets sent to lower layer, sum(packetBytes)"
+scalar KyberLTENetwork.ueB.wlan[0].mac packetReceivedFromUpper:count 3
+attr interpolationmode none
+attr title "packets received from upper layer, count"
+scalar KyberLTENetwork.ueB.wlan[0].mac packetReceivedFromUpper:sum(packetBytes) 908
+attr interpolationmode none
+attr title "packets received from upper layer, sum(packetBytes)"
+scalar KyberLTENetwork.ueB.wlan[0].mac packetSentToUpper:count 3
+attr interpolationmode none
+attr title "packets sent to upper layer, count"
+scalar KyberLTENetwork.ueB.wlan[0].mac packetSentToUpper:sum(packetBytes) 940
+attr interpolationmode none
+attr title "packets sent to upper layer, sum(packetBytes)"
+scalar KyberLTENetwork.ueB.wlan[0].mac packetDrop:count 0
+attr interpolationmode none
+attr source packetDropped
+attr title "packet drops, count"
+scalar KyberLTENetwork.ueB.wlan[0].mac packetDrop:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropped
+attr title "packet drops, sum(packetBytes)"
+scalar KyberLTENetwork.ueB.wlan[0].mac packetDropIncorrectlyReceived:count 0
+attr interpolationmode none
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packet drops: incorrectly received, count"
+scalar KyberLTENetwork.ueB.wlan[0].mac packetDropIncorrectlyReceived:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packet drops: incorrectly received, sum(packetBytes)"
+scalar KyberLTENetwork.ueB.wlan[0].mac packetDropNotAddressedToUs:count 0
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drops: not addressed to us, count"
+scalar KyberLTENetwork.ueB.wlan[0].mac packetDropNotAddressedToUs:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drops: not addressed to us, sum(packetBytes)"
+scalar KyberLTENetwork.ueB.wlan[0].mac packetDropQueueOverflow:count 0
+attr interpolationmode none
+attr source packetDropReasonIsQueueOverflow(packetDropped)
+attr title "packet drops: queue overflow, count"
+scalar KyberLTENetwork.ueB.wlan[0].mac packetDropQueueOverflow:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsQueueOverflow(packetDropped)
+attr title "packet drops: queue overflow, sum(packetBytes)"
+scalar KyberLTENetwork.ueB.wlan[0].mac packetDropRetryLimitReached:count 0
+attr interpolationmode none
+attr source packetDropReasonIsRetryLimitReached(packetDropped)
+attr title "packet drops: retry limit reached, count"
+scalar KyberLTENetwork.ueB.wlan[0].mac packetDropRetryLimitReached:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsRetryLimitReached(packetDropped)
+attr title "packet drops: retry limit reached, sum(packetBytes)"
+scalar KyberLTENetwork.ueB.wlan[0].mac packetDropDuplicateDetected:count 0
+attr interpolationmode none
+attr source packetDropReasonIsDuplicateDetected(packetDropped)
+attr title "packet drops: duplicate detected, count"
+scalar KyberLTENetwork.ueB.wlan[0].mac packetDropDuplicateDetected:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsDuplicateDetected(packetDropped)
+attr title "packet drops: duplicate detected, sum(packetBytes)"
+scalar KyberLTENetwork.ueB.wlan[0].mac packetDropOther:count 0
+attr interpolationmode none
+attr source packetDropReasonIsOther(packetDropped)
+attr title "packet drops: other, count"
+scalar KyberLTENetwork.ueB.wlan[0].mac packetDropOther:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsOther(packetDropped)
+attr title "packet drops: other, sum(packetBytes)"
+scalar KyberLTENetwork.ueB.wlan[0].mac linkBroken:count 0
+attr interpolationmode none
+attr title "link breaks, count"
+statistic KyberLTENetwork.ueB.wlan[0].radio radioChannel:histogram
+field count 1
+field mean 0
+field stddev -nan
+field min 0
+field max 0
+field sum 0
+field sqrsum 0
+attr interpolationmode sample-hold
+attr source radioChannelChanged
+attr title "Radio channel, histogram"
+bin	-inf	0
+bin	-0.5	0
+bin	-0.48	0
+bin	-0.46	0
+bin	-0.44	0
+bin	-0.42	0
+bin	-0.4	0
+bin	-0.38	0
+bin	-0.36	0
+bin	-0.34	0
+bin	-0.32	0
+bin	-0.3	0
+bin	-0.28	0
+bin	-0.26	0
+bin	-0.24	0
+bin	-0.22	0
+bin	-0.2	0
+bin	-0.18	0
+bin	-0.16	0
+bin	-0.14	0
+bin	-0.12	0
+bin	-0.1	0
+bin	-0.08	0
+bin	-0.06	0
+bin	-0.04	0
+bin	-0.02	0
+bin	0	1
+bin	0.02	0
+bin	0.04	0
+bin	0.06	0
+bin	0.08	0
+bin	0.1	0
+bin	0.12	0
+bin	0.14	0
+bin	0.16	0
+bin	0.18	0
+bin	0.2	0
+bin	0.22	0
+bin	0.24	0
+bin	0.26	0
+bin	0.28	0
+bin	0.3	0
+bin	0.32	0
+bin	0.34	0
+bin	0.36	0
+bin	0.38	0
+bin	0.4	0
+bin	0.42	0
+bin	0.44	0
+bin	0.46	0
+bin	0.48	0
+bin	0.5	0
+scalar KyberLTENetwork.ueB.wlan[0].radio radioMode:count 13
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, count"
+scalar KyberLTENetwork.ueB.wlan[0].radio receptionState:count 23
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, count"
+scalar KyberLTENetwork.ueB.wlan[0].radio transmissionState:count 20
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, count"
+statistic KyberLTENetwork.ueB.wlan[0].radio minSnir:histogram
+field count 6
+field mean 1222.8609700649
+field stddev 2.7295751678464e-05
+field min 1222.8609700649
+field max 1222.8609700649
+field sum 7337.1658203895
+field sqrsum 8972333.7126486
+attr source minimumSnir(packetSentToUpper)
+attr title "Min SNIR, histogram"
+bin	-inf	0
+bin	1222.36	0
+bin	1222.38	0
+bin	1222.4	0
+bin	1222.42	0
+bin	1222.44	0
+bin	1222.46	0
+bin	1222.48	0
+bin	1222.5	0
+bin	1222.52	0
+bin	1222.54	0
+bin	1222.56	0
+bin	1222.58	0
+bin	1222.6	0
+bin	1222.62	0
+bin	1222.64	0
+bin	1222.66	0
+bin	1222.68	0
+bin	1222.7	0
+bin	1222.72	0
+bin	1222.74	0
+bin	1222.76	0
+bin	1222.78	0
+bin	1222.8	0
+bin	1222.82	0
+bin	1222.84	0
+bin	1222.86	6
+bin	1222.88	0
+bin	1222.9	0
+bin	1222.92	0
+bin	1222.94	0
+bin	1222.96	0
+bin	1222.98	0
+bin	1223	0
+bin	1223.02	0
+bin	1223.04	0
+bin	1223.06	0
+bin	1223.08	0
+bin	1223.1	0
+bin	1223.12	0
+bin	1223.14	0
+bin	1223.16	0
+bin	1223.18	0
+bin	1223.2	0
+bin	1223.22	0
+bin	1223.24	0
+bin	1223.26	0
+bin	1223.28	0
+bin	1223.3	0
+bin	1223.32	0
+bin	1223.34	0
+bin	1223.36	0
+bin	1223.38	0
+statistic KyberLTENetwork.ueB.wlan[0].radio packetErrorRate:histogram
+field count 6
+field mean 0
+field stddev 0
+field min 0
+field max 0
+field sum 0
+field sqrsum 0
+attr source packetErrorRate(packetSentToUpper)
+attr title "Packet error rate, histogram"
+bin	-inf	0
+bin	-0.5	0
+bin	-0.48	0
+bin	-0.46	0
+bin	-0.44	0
+bin	-0.42	0
+bin	-0.4	0
+bin	-0.38	0
+bin	-0.36	0
+bin	-0.34	0
+bin	-0.32	0
+bin	-0.3	0
+bin	-0.28	0
+bin	-0.26	0
+bin	-0.24	0
+bin	-0.22	0
+bin	-0.2	0
+bin	-0.18	0
+bin	-0.16	0
+bin	-0.14	0
+bin	-0.12	0
+bin	-0.1	0
+bin	-0.08	0
+bin	-0.06	0
+bin	-0.04	0
+bin	-0.02	0
+bin	0	6
+bin	0.02	0
+bin	0.04	0
+bin	0.06	0
+bin	0.08	0
+bin	0.1	0
+bin	0.12	0
+bin	0.14	0
+bin	0.16	0
+bin	0.18	0
+bin	0.2	0
+bin	0.22	0
+bin	0.24	0
+bin	0.26	0
+bin	0.28	0
+bin	0.3	0
+bin	0.32	0
+bin	0.34	0
+bin	0.36	0
+bin	0.38	0
+bin	0.4	0
+bin	0.42	0
+bin	0.44	0
+bin	0.46	0
+bin	0.48	0
+bin	0.5	0
+statistic KyberLTENetwork.ueB.wlan[0].radio bitErrorRate:histogram
+field count 0
+field mean -nan
+field stddev nan
+field min nan
+field max nan
+field sum 0
+field sqrsum 0
+attr source bitErrorRate(packetSentToUpper)
+attr title "Bit error rate, histogram"
+bin	-inf	0
+bin	0	0
+bin	1	0
+statistic KyberLTENetwork.ueB.wlan[0].radio symbolErrorRate:histogram
+field count 0
+field mean -nan
+field stddev nan
+field min nan
+field max nan
+field sum 0
+field sqrsum 0
+attr source symbolErrorRate(packetSentToUpper)
+attr title "Symbol error rate, histogram"
+bin	-inf	0
+bin	0	0
+bin	1	0
 scalar KyberLTENetwork.ueB.ipv4.ip packetDropAddressResolutionFailed:count 0
 attr interpolationmode none
 attr source packetDropReasonIsAddressResolutionFailed(packetDropped)
@@ -191,14 +1810,14 @@ attr source packetDropReasonIsUndefined(packetDropped)
 attr title "packet drop: undefined, sum(packetBytes)"
 scalar KyberLTENetwork.ueB.ipv4.arp arpResolutionFailed:count 0
 attr title "ARP failed resolutions, count"
-scalar KyberLTENetwork.ueB.ipv4.arp arpResolutionCompleted:count 0
+scalar KyberLTENetwork.ueB.ipv4.arp arpResolutionCompleted:count 1
 attr title "ARP completed resolutions, count"
 scalar KyberLTENetwork.ueB.ipv4.arp arpResolutionInitiated:count 0
 attr title "ARP initiated resolutions, count"
-scalar KyberLTENetwork.ueB.ipv4.arp arpReplySent:count 0
+scalar KyberLTENetwork.ueB.ipv4.arp arpReplySent:count 1
 attr source arpReplySent
 attr title "ARP replies sent, count"
-scalar KyberLTENetwork.ueB.ipv4.arp arpReplySent:sum(packetBytes) 0
+scalar KyberLTENetwork.ueB.ipv4.arp arpReplySent:sum(packetBytes) 28
 attr source arpReplySent
 attr title "ARP replies sent, sum(packetBytes)"
 scalar KyberLTENetwork.ueB.ipv4.arp arpRequestSent:count 0
@@ -207,23 +1826,23 @@ attr title "ARP request sent, count"
 scalar KyberLTENetwork.ueB.ipv4.arp arpRequestSent:sum(packetBytes) 0
 attr source arpRequestSent
 attr title "ARP request sent, sum(packetBytes)"
-scalar KyberLTENetwork.ueB.udp packetReceived:count 0
+scalar KyberLTENetwork.ueB.udp packetReceived:count 2
 attr interpolationmode none
 attr source packetReceived
 attr title "packets received, count"
-scalar KyberLTENetwork.ueB.udp packetReceived:sum(packetBytes) 0
+scalar KyberLTENetwork.ueB.udp packetReceived:sum(packetBytes) 848
 attr interpolationmode none
 attr source packetReceived
 attr title "packets received, sum(packetBytes)"
-scalar KyberLTENetwork.ueB.udp packetSent:count 0
+scalar KyberLTENetwork.ueB.udp packetSent:count 2
 attr interpolationmode none
 attr source packetSent
 attr title "packets sent, count"
-scalar KyberLTENetwork.ueB.udp packetSent:sum(packetBytes) 0
+scalar KyberLTENetwork.ueB.udp packetSent:sum(packetBytes) 816
 attr interpolationmode none
 attr source packetSent
 attr title "packets sent, sum(packetBytes)"
-scalar KyberLTENetwork.ueB.udp passedUpPk:count 0
+scalar KyberLTENetwork.ueB.udp passedUpPk:count 2
 attr interpolationmode none
 attr source packetSentToUpper
 attr title "packets passed up, count"

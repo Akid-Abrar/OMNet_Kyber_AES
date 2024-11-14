@@ -40,19 +40,33 @@ void LTEApp::initialize(int stage)
     ApplicationBase::initialize(stage);
 
     if (stage == INITSTAGE_LOCAL) {
+        EV_INFO << getFullPath() << ": LTEApp::initialize() called at stage INITSTAGE_LOCAL" << endl;
         // Initialize member variables
         selfMsg = new cMessage("start");
         localPort = par("localPort");
         destPort = par("destPort");
     }
     else if (stage == INITSTAGE_APPLICATION_LAYER) {
+        EV_INFO << getFullPath() << ": LTEApp::initialize() called at stage INITSTAGE_APPLICATION_LAYER" << endl;
         // Schedule the start of the application after all initialization stages
-        scheduleAt(simTime() + par("startTime").doubleValue(), selfMsg);
+        //scheduleAt(simTime() + par("startTime").doubleValue(), selfMsg);
     }
+}
+void LTEApp::handleStartOperation(LifecycleOperation *operation)
+{
+    EV_INFO << getFullPath() << ": LTEApp::handleStartOperation() called" << endl;
+    scheduleAt(simTime() + par("startTime").doubleValue(), selfMsg);
+}
+
+void LTEApp::handleMessage(cMessage *msg)
+{
+    EV_INFO << getFullPath() << ": LTEApp::handleMessage() called with message: " << msg->getName() << endl;
+    ApplicationBase::handleMessage(msg);
 }
 
 void LTEApp::handleMessageWhenUp(cMessage *msg)
 {
+    EV_INFO << getFullPath() << ": LTEApp::handleMessageWhenUp() called with message: " << msg->getName() << endl;
     if (msg->isSelfMessage()) {
         processStart();
         delete msg; // Delete the self-message
@@ -105,7 +119,8 @@ void LTEApp::sendPublicKey()
         throw cRuntimeError("Failed to generate Kyber512 key pair");
 
     // Log key generation
-    EV_INFO << "Generated Kyber512 key pair.\n";
+    EV_INFO << "Generated Kyber key pair.\n";
+    bubble("Key Generated");
 
     // Create a packet with the public key
     Packet *packet = new Packet("PublicKey");
@@ -150,6 +165,7 @@ void LTEApp::socketDataArrived(UdpSocket *socket, Packet *packet)
         Packet *respPacket = new Packet("Ciphertext");
         auto respPayload = makeShared<BytesChunk>(ciphertext, kem->length_ciphertext);
         respPacket->insertAtBack(respPayload);
+        bubble("Ciphertext Generated");
 
         socket->sendTo(respPacket, destAddr, destPort);
 
@@ -178,6 +194,7 @@ void LTEApp::socketDataArrived(UdpSocket *socket, Packet *packet)
         if (OQS_KEM_decaps(kem, sharedSecret, receivedCiphertext, secretKey) != OQS_SUCCESS)
             throw cRuntimeError("Failed to decapsulate shared secret");
 
+        bubble("Decapsulated");
         // Free resources
         OQS_KEM_free(kem);
         delete[] receivedCiphertext;
@@ -256,10 +273,6 @@ void LTEApp::sendEncryptedData()
     delete[] encryptedData;
 }
 
-void LTEApp::handleStartOperation(LifecycleOperation *operation)
-{
-    // No additional actions needed here
-}
 
 void LTEApp::handleStopOperation(LifecycleOperation *operation)
 {
