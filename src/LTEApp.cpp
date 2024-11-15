@@ -18,6 +18,7 @@ using namespace omnetpp;
 using namespace inet;
 
 Define_Module(LTEApp);
+const char* kyberVariantLTE = "Kyber1024";
 
 LTEApp::LTEApp()
 {
@@ -40,33 +41,31 @@ void LTEApp::initialize(int stage)
     ApplicationBase::initialize(stage);
 
     if (stage == INITSTAGE_LOCAL) {
-        EV_INFO << getFullPath() << ": LTEApp::initialize() called at stage INITSTAGE_LOCAL" << endl;
         // Initialize member variables
         selfMsg = new cMessage("start");
         localPort = par("localPort");
         destPort = par("destPort");
     }
     else if (stage == INITSTAGE_APPLICATION_LAYER) {
-        EV_INFO << getFullPath() << ": LTEApp::initialize() called at stage INITSTAGE_APPLICATION_LAYER" << endl;
         // Schedule the start of the application after all initialization stages
         //scheduleAt(simTime() + par("startTime").doubleValue(), selfMsg);
     }
 }
 void LTEApp::handleStartOperation(LifecycleOperation *operation)
 {
-    EV_INFO << getFullPath() << ": LTEApp::handleStartOperation() called" << endl;
+    EV_INFO << getFullPath() << "KyberAESLTE LTEApp::handleStartOperation() called" << endl;
     scheduleAt(simTime() + par("startTime").doubleValue(), selfMsg);
 }
 
 void LTEApp::handleMessage(cMessage *msg)
 {
-    EV_INFO << getFullPath() << ": LTEApp::handleMessage() called with message: " << msg->getName() << endl;
+    EV_INFO << getFullPath() << "KyberAESLTE LTEApp::handleMessage() called with message: " << msg->getName() << endl;
     ApplicationBase::handleMessage(msg);
 }
 
 void LTEApp::handleMessageWhenUp(cMessage *msg)
 {
-    EV_INFO << getFullPath() << ": LTEApp::handleMessageWhenUp() called with message: " << msg->getName() << endl;
+    EV_INFO << getFullPath() << "KyberAESLTE LTEApp::handleMessageWhenUp() called with message: " << msg->getName() << endl;
     if (msg->isSelfMessage()) {
         processStart();
         delete msg; // Delete the self-message
@@ -79,7 +78,7 @@ void LTEApp::processStart()
 {
     // Retrieve and print destAddr parameter
     const char* destAddrStr = par("destAddr").stringValue();
-    EV_INFO << "processStart() called in " << getParentModule()->getFullName() << ". destAddr: " << destAddrStr << endl;
+    EV_INFO << "KyberAESLTE processStart() called in " << getParentModule()->getFullName() << ". destAddr: " << destAddrStr << endl;
 
     // Convert the destAddr string to L3Address
     destAddr = L3Address(destAddrStr);
@@ -106,9 +105,9 @@ void LTEApp::processStart()
 void LTEApp::sendPublicKey()
 {
     // Initialize Kyber KEM
-    OQS_KEM *kem = OQS_KEM_new("Kyber512");
+    OQS_KEM *kem = OQS_KEM_new(kyberVariantLTE);
     if (!kem)
-        throw cRuntimeError("Failed to initialize Kyber512 KEM");
+        throw cRuntimeError("Failed to initialize Kyber KEM");
 
     // Allocate memory for keys
     publicKey = new uint8_t[kem->length_public_key];
@@ -116,17 +115,17 @@ void LTEApp::sendPublicKey()
 
     // Generate key pair
     if (OQS_KEM_keypair(kem, publicKey, secretKey) != OQS_SUCCESS)
-        throw cRuntimeError("Failed to generate Kyber512 key pair");
+        throw cRuntimeError("Failed to generate Kyber key pair");
 
     // Log key generation
-    EV_INFO << "Generated Kyber key pair.\n";
+    EV_INFO << "KyberAESLTE Generated Kyber key pair.\n";
     bubble("Key Generated");
 
     // Create a packet with the public key
     Packet *packet = new Packet("PublicKey");
     auto payload = makeShared<BytesChunk>(publicKey, kem->length_public_key);
     packet->insertAtBack(payload);
-
+    packet->setTimestamp(simTime());
     // Send the packet
     EV_INFO << destAddr<<endl;
     EV_INFO << destPort<<endl;
@@ -139,10 +138,18 @@ void LTEApp::sendPublicKey()
 void LTEApp::socketDataArrived(UdpSocket *socket, Packet *packet)
 {
     std::string nodeName = getParentModule()->getFullName();
-    EV_INFO << nodeName << " received a packet: " << packet->getName() << endl;
+    EV_INFO<< "KyberAESLTE: " << nodeName << " received a packet: " << packet->getName() << endl;
 
     const auto& payload = packet->peekData<BytesChunk>();
     size_t payloadSize = payload->getChunkLength().get();
+
+    simtime_t delay = simTime() - packet->getTimestamp();
+    double delay_ms = delay.dbl() * 1e6; // Convert seconds to milliseconds
+
+    std::ostringstream oss_ms;
+    oss_ms << std::fixed << std::setprecision(9);
+    oss_ms << "KyberAESLTE: Communication delay: " << delay_ms << " microseconds.\n";
+    EV << oss_ms.str();
 
     if (nodeName == "ueB" && strcmp(packet->getName(), "PublicKey") == 0) {
         // Node B processes public key
@@ -150,9 +157,9 @@ void LTEApp::socketDataArrived(UdpSocket *socket, Packet *packet)
         memcpy(receivedPublicKey, payload->getBytes().data(), payloadSize);
 
         // Initialize Kyber KEM
-        OQS_KEM *kem = OQS_KEM_new("Kyber512");
+        OQS_KEM *kem = OQS_KEM_new(kyberVariantLTE);
         if (!kem)
-            throw cRuntimeError("Failed to initialize Kyber512 KEM");
+            throw cRuntimeError("Failed to initialize Kyber KEM");
 
         uint8_t *ciphertext = new uint8_t[kem->length_ciphertext];
         sharedSecret = new uint8_t[kem->length_shared_secret];
@@ -161,6 +168,8 @@ void LTEApp::socketDataArrived(UdpSocket *socket, Packet *packet)
         if (OQS_KEM_encaps(kem, ciphertext, sharedSecret, receivedPublicKey) != OQS_SUCCESS)
             throw cRuntimeError("Failed to encapsulate shared secret");
 
+        // Log key generation
+        EV_INFO << "KyberAESLTE Generated Ciphertext and Shared Secret key.\n";
         // Send ciphertext back to ueA
         Packet *respPacket = new Packet("Ciphertext");
         auto respPayload = makeShared<BytesChunk>(ciphertext, kem->length_ciphertext);
@@ -184,9 +193,9 @@ void LTEApp::socketDataArrived(UdpSocket *socket, Packet *packet)
         memcpy(receivedCiphertext, payload->getBytes().data(), payloadSize);
 
         // Initialize Kyber KEM
-        OQS_KEM *kem = OQS_KEM_new("Kyber512");
+        OQS_KEM *kem = OQS_KEM_new(kyberVariantLTE);
         if (!kem)
-            throw cRuntimeError("Failed to initialize Kyber512 KEM");
+            throw cRuntimeError("Failed to initialize Kyber KEM");
 
         sharedSecret = new uint8_t[kem->length_shared_secret];
 
@@ -195,6 +204,7 @@ void LTEApp::socketDataArrived(UdpSocket *socket, Packet *packet)
             throw cRuntimeError("Failed to decapsulate shared secret");
 
         bubble("Decapsulated");
+        EV_INFO << "KyberAESLTE generated Shared Secret key.\n";
         // Free resources
         OQS_KEM_free(kem);
         delete[] receivedCiphertext;
@@ -219,7 +229,7 @@ void LTEApp::socketDataArrived(UdpSocket *socket, Packet *packet)
         AES_cbc_encrypt(receivedEncryptedData, decryptedData, dataLen, &aesKey, iv, AES_DECRYPT);
 
         // Output decrypted data
-        EV_INFO << nodeName << " received decrypted data: " << decryptedData << endl;
+        EV_INFO << nodeName << "KyberAESLTE received decrypted data: " << decryptedData << endl;
 
         // Clean up
         delete[] decryptedData;
@@ -262,11 +272,12 @@ void LTEApp::sendEncryptedData()
     Packet *encPacket = new Packet("EncryptedData");
     auto payload = makeShared<BytesChunk>(encryptedData, paddedLen);
     encPacket->insertAtBack(payload);
+    encPacket->setTimestamp(simTime());
 
     // Send the encrypted message to the other node
     socket.sendTo(encPacket, destAddr, destPort);
 
-    EV_INFO << nodeName << " sent encrypted data at time " << simTime() << endl;
+    EV_INFO << nodeName << "KyberAESLTE sent encrypted data at time " << simTime() << endl;
 
     // Clean up
     delete[] plainData;

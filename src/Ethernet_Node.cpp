@@ -9,13 +9,11 @@
 Define_Module(Ethernet_Node);
 
 size_t kyber_key_length;
-const char* kyberVariant = "Kyber1024";
+const char* kyberVariant = "Kyber512";
 
 // Remove unnecessary comments
 void Ethernet_Node::initialize()
 {
-    EV << "Initialized";
-    bubble("init");
     const char* nodeName = getName();
     if (strcmp(nodeName, "nodeA") == 0) {
         sendPublickKey();
@@ -24,8 +22,6 @@ void Ethernet_Node::initialize()
 
 void Ethernet_Node::sendPublickKey()
 {
-    // Node A: Generate key pair and send public key
-    EV << "here\n";
     OQS_KEM *kem = OQS_KEM_new(kyberVariant);
     if (!kem) error("Failed to initialize Kyber KEM");
 
@@ -52,10 +48,9 @@ void Ethernet_Node::sendPublickKey()
     EV << "Public key size: " << kem->length_public_key << " bytes.\n";
     EV << "Secret key size: " << kem->length_secret_key << " bytes.\n";
 
-    EV << nodeName << " generated Kyber key pair for Ethernet.\n";
-    EV << nodeName << "'s public key: " << formatHex(publicKey, kem->length_public_key) << "\n";
+    //EV << nodeName << "'s public key: " << formatHex(publicKey, kem->length_public_key) << "\n";
     kyber_key_length = kem->length_public_key;
-    bubble("Generated key pair");
+    //bubble("Generated key pair");
 
     // Send public key to Node B
     KyberMessage *msg = new KyberMessage("PublicKey");
@@ -67,6 +62,10 @@ void Ethernet_Node::sendPublickKey()
     for (size_t i = 0; i < kem->length_public_key; ++i) {
         msg->setPayload(i, static_cast<char>(publicKey[i]));
     }
+    int payloadBitLength = kem->length_public_key * 8; // payload size in bits
+    int headerBitLength = 0; // if you have any additional headers
+    int totalBitLength = payloadBitLength + headerBitLength;
+    msg->setBitLength(totalBitLength);
 
     msg->setTimestamp(simTime());
     // Send the message through the correct output gate
@@ -117,6 +116,11 @@ void Ethernet_Node::sendEncryptedData()
         encMsg->setPayload(i, static_cast<int>(encryptedData[i]));
     }
 
+    int payloadBitLength = paddedLen * 8; // payload size in bits
+    int headerBitLength = 0; // if you have any additional headers
+    int totalBitLength = payloadBitLength + headerBitLength;
+    encMsg->setBitLength(totalBitLength);
+
     encMsg->setTimestamp(simTime());
     // Send the encrypted message to the other node
     send(encMsg, "port$o", 0); // Use the appropriate gate index
@@ -151,7 +155,14 @@ void Ethernet_Node::handleMessage(cMessage *msg)
     }
     // In handleMessage(), after receiving the message
     simtime_t delay = simTime() - kMsg->getTimestamp();
-    EV << "Communication delay: " << delay << " seconds.\n";
+    double delay_ms = delay.dbl() * 1e6; // Convert seconds to milliseconds
+
+    std::ostringstream oss_ms;
+    oss_ms << std::fixed << std::setprecision(9);
+    oss_ms << "Communication delay: " << delay_ms << " microseconds.\n";
+    EV << oss_ms.str();
+    //EV << "Communication delay: " << delay << " seconds.\n";
+
     // In handleMessage()
     int packetSizeBits = kMsg->getBitLength();
     EV << "Packet size: " << packetSizeBits << " bits (" << packetSizeBits / 8 << " bytes).\n";
@@ -160,8 +171,8 @@ void Ethernet_Node::handleMessage(cMessage *msg)
     size_t payloadSize = kMsg->getPayloadArraySize();
     if (strcmp(nodeName, "nodeB") == 0 && kMsg->getMsgType() == 0) {
         // Node B: Receive public key and send ciphertext
-        EV << nodeName << " received public key from Node A.\n";
-        bubble("Received public key");
+        //EV << nodeName << " received public key from Node A.\n";
+        //bubble("Received public key");
 
         // Allocate memory to store the payload
         uint8_t *receivedPublicKey = new uint8_t[payloadSize];
@@ -171,7 +182,7 @@ void Ethernet_Node::handleMessage(cMessage *msg)
             receivedPublicKey[i] = static_cast<uint8_t>(kMsg->getPayload(i));
         }
 
-        EV << "Public key: " << formatHex(receivedPublicKey, kyber_key_length) << endl;
+        //EV << "Public key: " << formatHex(receivedPublicKey, kyber_key_length) << endl;
 
         OQS_KEM *kem = OQS_KEM_new(kyberVariant);
         if (!kem) error("Failed to initialize Kyber KEM");
@@ -200,7 +211,7 @@ void Ethernet_Node::handleMessage(cMessage *msg)
         EV << "Ciphertext size: " << kem->length_ciphertext << " bytes.\n";
         EV << "Shared secret size: " << kem->length_shared_secret << " bytes.\n";
 
-        EV << nodeName << "'s shared secret: " << formatHex(sharedSecret, kem->length_shared_secret) << "\n";
+        //EV << nodeName << "'s shared secret: " << formatHex(sharedSecret, kem->length_shared_secret) << "\n";
 
         // Send ciphertext back to Node A
         KyberMessage *respMsg = new KyberMessage("Ciphertext");
@@ -211,6 +222,11 @@ void Ethernet_Node::handleMessage(cMessage *msg)
         for (size_t i = 0; i < kem->length_ciphertext; ++i) {
             respMsg->setPayload(i, static_cast<char>(ciphertext[i]));
         }
+
+        int payloadBitLength = kem->length_ciphertext * 8; // payload size in bits
+        int headerBitLength = 0; // if you have any additional headers
+        int totalBitLength = payloadBitLength + headerBitLength;
+        respMsg->setBitLength(totalBitLength);
 
         // Send the response message
         send(respMsg, "port$o", 0); // Use the appropriate gate index
@@ -253,11 +269,11 @@ void Ethernet_Node::handleMessage(cMessage *msg)
         EV << nodeName << " decapsulation took " << cycles << " CPU cycles.\n";
 
         // Print sizes
-        EV << "Shared secret size: " << kem->length_shared_secret << " bytes.\n";
+        //EV << "Shared secret size: " << kem->length_shared_secret << " bytes.\n";
 
-        EV << nodeName << " decapsulated shared secret.\n";
-        EV << nodeName << "'s shared secret: " << formatHex(sharedSecret, kem->length_shared_secret) << "\n";
-        bubble("Shared secret derived");
+        //EV << nodeName << " decapsulated shared secret.\n";
+        //EV << nodeName << "'s shared secret: " << formatHex(sharedSecret, kem->length_shared_secret) << "\n";
+        //bubble("Shared secret derived");
 
         OQS_KEM_free(kem);
 

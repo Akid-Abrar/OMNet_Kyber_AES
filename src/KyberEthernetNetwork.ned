@@ -28,5 +28,5 @@ network KyberEthernetNetwork
     connections allowunconnected:
         //        hostA.ethg++ <--> EthernetCable <--> switch.ethg++;
         //        hostB.ethg++ <--> EthernetCable <--> switch.ethg++;
-        nodeA.port++ <--> Eth100G <--> nodeB.port++;
+        nodeA.port++ <--> Eth100G{length = 1000m;} <--> nodeB.port++;
 }
