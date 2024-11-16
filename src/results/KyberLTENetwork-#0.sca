@@ -1,22 +1,30 @@
 version 2
-run KyberLTENetwork-0-20241115-01:22:46-126559
+run KyberLTENetwork-0-20241116-02:43:33-153423
 attr configname KyberLTENetwork
-attr datetime 20241115-01:22:46
+attr datetime 20241116-02:43:33
 attr experiment KyberLTENetwork
 attr inifile omnetpp.ini
 attr iterationvars ""
 attr iterationvarsf ""
 attr measurement ""
 attr network KyberLTENetwork
-attr processid 126559
+attr processid 153423
 attr repetition 0
 attr replication #0
 attr resultdir results
 attr runnumber 0
 attr seedset 0
-param *.playgroundSizeX 100m
-param *.playgroundSizeY 100m
-param *.playgroundSizeZ 0m
+param *.visualizer.*.mobilityVisualizer.displayMobility true
+param *.visualizer.*.mobilityVisualizer.displayPositions true
+param *.visualizer.*.mobilityVisualizer.displayOrientations true
+param *.visualizer.*.mobilityVisualizer.displayVelocities true
+param *.visualizer.*.mobilityVisualizer.displayMovementTrails true
+param **.constraintAreaMinX 0m
+param **.constraintAreaMaxX 955m
+param **.constraintAreaMinY 0m
+param **.constraintAreaMaxY 955m
+param **.constraintAreaMinZ 0m
+param **.constraintAreaMaxZ 0m
 
 scalar KyberLTENetwork.radioMedium.propagation "Arrival computation count" 15
 scalar KyberLTENetwork.radioMedium "transmission count" 15
@@ -61,12 +69,12 @@ attr interpolationmode none
 attr title "packet popped, sum(packetBytes)"
 statistic KyberLTENetwork.ueA.wlan[0].mac.dcf.channelAccess.pendingQueue queueingTime:histogram
 field count 3
-field mean 0.00036223412433333
-field stddev 0.00032127831811781
+field mean 0.00031766373
+field stddev 0.00034159500876409
 field min 0
-field max 0.000612702373
-field sum 0.001086702373
-field sqrsum 6.0008019787983e-07
+field max 0.00067899119
+field sum 0.00095299119
+field sqrsum 5.3610503609762e-07
 attr interpolationmode none
 attr source queueingTime(packetPopped)
 attr title "queueing times, histogram"
@@ -99,7 +107,7 @@ bin	0.00023	0
 bin	0.00024	0
 bin	0.00025	0
 bin	0.00026	0
-bin	0.00027	0
+bin	0.00027	1
 bin	0.00028	0
 bin	0.00029	0
 bin	0.0003	0
@@ -119,7 +127,7 @@ bin	0.00043	0
 bin	0.00044	0
 bin	0.00045	0
 bin	0.00046	0
-bin	0.00047	1
+bin	0.00047	0
 bin	0.00048	0
 bin	0.00049	0
 bin	0.0005	0
@@ -133,13 +141,13 @@ bin	0.00057	0
 bin	0.00058	0
 bin	0.00059	0
 bin	0.0006	0
-bin	0.00061	1
+bin	0.00061	0
 bin	0.00062	0
 bin	0.00063	0
 bin	0.00064	0
 bin	0.00065	0
 bin	0.00066	0
-bin	0.00067	0
+bin	0.00067	1
 bin	0.00068	0
 bin	0.00069	0
 bin	0.0007	0
@@ -150,11 +158,19 @@ bin	0.00074	0
 bin	0.00075	0
 bin	0.00076	0
 bin	0.00077	0
+bin	0.00078	0
+bin	0.00079	0
+bin	0.0008	0
+bin	0.00081	0
+bin	0.00082	0
+bin	0.00083	0
+bin	0.00084	0
+bin	0.00085	0
 scalar KyberLTENetwork.ueA.wlan[0].mac.dcf.channelAccess.pendingQueue queueLength:max 1
 attr interpolationmode sample-hold
 attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
 attr title "queue length, max"
-scalar KyberLTENetwork.ueA.wlan[0].mac.dcf.channelAccess.pendingQueue queueLength:timeavg 1.0877901631632e-06
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf.channelAccess.pendingQueue queueLength:timeavg 9.5394513513514e-07
 attr interpolationmode sample-hold
 attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
 attr title "queue length, timeavg"
@@ -180,12 +196,12 @@ attr interpolationmode none
 attr title "packets removed, sum(packetBytes)"
 statistic KyberLTENetwork.ueA.wlan[0].mac.dcf.channelAccess.inProgressFrames queueingTime:histogram
 field count 4
-field mean 0.000362702338
-field stddev 0.00033291321792142
+field mean 0.00036899119
+field stddev 0.00033711622812478
 field min 5e-05
-field max 0.000715404644
-field sum 0.001450809352
-field sqrsum 8.5870557596305e-07
+field max 0.00072798238
+field sum 0.00147596476
+field sqrsum 8.855600469857e-07
 attr interpolationmode none
 attr source queueingTime(packetDequeued)
 attr title "queueing times, histogram"
@@ -200,8 +216,8 @@ bin	6e-05	0
 bin	7e-05	0
 bin	8e-05	0
 bin	9e-05	0
-bin	0.0001	1
-bin	0.00011	0
+bin	0.0001	0
+bin	0.00011	1
 bin	0.00012	0
 bin	0.00013	0
 bin	0.00014	0
@@ -247,8 +263,8 @@ bin	0.00053	0
 bin	0.00054	0
 bin	0.00055	0
 bin	0.00056	0
-bin	0.00057	1
-bin	0.00058	0
+bin	0.00057	0
+bin	0.00058	1
 bin	0.00059	0
 bin	0.0006	0
 bin	0.00061	0
@@ -261,8 +277,8 @@ bin	0.00067	0
 bin	0.00068	0
 bin	0.00069	0
 bin	0.0007	0
-bin	0.00071	1
-bin	0.00072	0
+bin	0.00071	0
+bin	0.00072	1
 bin	0.00073	0
 bin	0.00074	0
 bin	0.00075	0
@@ -280,11 +296,12 @@ bin	0.00086	0
 bin	0.00087	0
 bin	0.00088	0
 bin	0.00089	0
+bin	0.0009	0
 scalar KyberLTENetwork.ueA.wlan[0].mac.dcf.channelAccess.inProgressFrames queueLength:max 2
 attr interpolationmode sample-hold
 attr source "count(packetEnqueued) - count(packetDequeued)"
 attr title "queue length, max"
-scalar KyberLTENetwork.ueA.wlan[0].mac.dcf.channelAccess.inProgressFrames queueLength:timeavg 1.4522616136136e-06
+scalar KyberLTENetwork.ueA.wlan[0].mac.dcf.channelAccess.inProgressFrames queueLength:timeavg 1.4774422022022e-06
 attr interpolationmode sample-hold
 attr source "count(packetEnqueued) - count(packetDequeued)"
 attr title "queue length, timeavg"
@@ -318,12 +335,12 @@ scalar KyberLTENetwork.ueA.wlan[0].mac.dcf frameSequenceFinished:count 3
 attr title "finished frame sequences, count"
 statistic KyberLTENetwork.ueA.wlan[0].mac.dcf frameSequenceDuration:histogram
 field count 3
-field mean 0.000291369012
-field stddev 0.00036839673669953
+field mean 0.00029765785666667
+field stddev 0.00037408603319417
 field min 5e-05
-field max 0.000715404644
-field sum 0.000874107036
-field sqrsum 5.2612001468329e-07
+field max 0.00072798238
+field sum 0.00089297357
+field sqrsum 5.4568131936808e-07
 attr source frameSequenceDuration(frameSequenceFinished)
 attr title "frame sequence durations, histogram"
 bin	-inf	0
@@ -337,8 +354,8 @@ bin	6e-05	0
 bin	7e-05	0
 bin	8e-05	0
 bin	9e-05	0
-bin	0.0001	1
-bin	0.00011	0
+bin	0.0001	0
+bin	0.00011	1
 bin	0.00012	0
 bin	0.00013	0
 bin	0.00014	0
@@ -398,8 +415,8 @@ bin	0.00067	0
 bin	0.00068	0
 bin	0.00069	0
 bin	0.0007	0
-bin	0.00071	1
-bin	0.00072	0
+bin	0.00071	0
+bin	0.00072	1
 bin	0.00073	0
 bin	0.00074	0
 bin	0.00075	0
@@ -417,6 +434,7 @@ bin	0.00086	0
 bin	0.00087	0
 bin	0.00088	0
 bin	0.00089	0
+bin	0.0009	0
 statistic KyberLTENetwork.ueA.wlan[0].mac.dcf frameSequenceNumPackets:histogram
 field count 3
 field mean 2.3333333333333
@@ -721,86 +739,67 @@ attr source transmissionStateChanged
 attr title "Radio transmission state, count"
 statistic KyberLTENetwork.ueA.wlan[0].radio minSnir:histogram
 field count 7
-field mean 1192.4317093185
-field stddev 0.031242290181548
-field min 1192.3906700525
-field max 1192.4827824961
-field sum 8347.0219652295
-field sqrsum 9953253.6755742
+field mean 107.71626091042
+field stddev 0
+field min 107.71626091042
+field max 107.71626091042
+field sum 754.01382637295
+field sqrsum 81219.550051654
 attr source minimumSnir(packetSentToUpper)
 attr title "Min SNIR, histogram"
 bin	-inf	0
-bin	1192.366	0
-bin	1192.368	0
-bin	1192.37	0
-bin	1192.372	0
-bin	1192.374	0
-bin	1192.376	0
-bin	1192.378	0
-bin	1192.38	0
-bin	1192.382	0
-bin	1192.384	0
-bin	1192.386	0
-bin	1192.388	0
-bin	1192.39	1
-bin	1192.392	0
-bin	1192.394	0
-bin	1192.396	0
-bin	1192.398	0
-bin	1192.4	0
-bin	1192.402	0
-bin	1192.404	0
-bin	1192.406	1
-bin	1192.408	0
-bin	1192.41	0
-bin	1192.412	1
-bin	1192.414	0
-bin	1192.416	0
-bin	1192.418	0
-bin	1192.42	0
-bin	1192.422	0
-bin	1192.424	0
-bin	1192.426	0
-bin	1192.428	0
-bin	1192.43	1
-bin	1192.432	0
-bin	1192.434	0
-bin	1192.436	0
-bin	1192.438	0
-bin	1192.44	0
-bin	1192.442	0
-bin	1192.444	0
-bin	1192.446	1
-bin	1192.448	0
-bin	1192.45	1
-bin	1192.452	0
-bin	1192.454	0
-bin	1192.456	0
-bin	1192.458	0
-bin	1192.46	0
-bin	1192.462	0
-bin	1192.464	0
-bin	1192.466	0
-bin	1192.468	0
-bin	1192.47	0
-bin	1192.472	0
-bin	1192.474	0
-bin	1192.476	0
-bin	1192.478	0
-bin	1192.48	0
-bin	1192.482	1
-bin	1192.484	0
-bin	1192.486	0
-bin	1192.488	0
-bin	1192.49	0
-bin	1192.492	0
-bin	1192.494	0
-bin	1192.496	0
-bin	1192.498	0
-bin	1192.5	0
-bin	1192.502	0
-bin	1192.504	0
-bin	1192.506	0
+bin	107.2	0
+bin	107.22	0
+bin	107.24	0
+bin	107.26	0
+bin	107.28	0
+bin	107.3	0
+bin	107.32	0
+bin	107.34	0
+bin	107.36	0
+bin	107.38	0
+bin	107.4	0
+bin	107.42	0
+bin	107.44	0
+bin	107.46	0
+bin	107.48	0
+bin	107.5	0
+bin	107.52	0
+bin	107.54	0
+bin	107.56	0
+bin	107.58	0
+bin	107.6	0
+bin	107.62	0
+bin	107.64	0
+bin	107.66	0
+bin	107.68	0
+bin	107.7	7
+bin	107.72	0
+bin	107.74	0
+bin	107.76	0
+bin	107.78	0
+bin	107.8	0
+bin	107.82	0
+bin	107.84	0
+bin	107.86	0
+bin	107.88	0
+bin	107.9	0
+bin	107.92	0
+bin	107.94	0
+bin	107.96	0
+bin	107.98	0
+bin	108	0
+bin	108.02	0
+bin	108.04	0
+bin	108.06	0
+bin	108.08	0
+bin	108.1	0
+bin	108.12	0
+bin	108.14	0
+bin	108.16	0
+bin	108.18	0
+bin	108.2	0
+bin	108.22	0
 statistic KyberLTENetwork.ueA.wlan[0].radio packetErrorRate:histogram
 field count 7
 field mean 0
@@ -1007,12 +1006,12 @@ attr interpolationmode none
 attr title "packet popped, sum(packetBytes)"
 statistic KyberLTENetwork.ueB.wlan[0].mac.dcf.channelAccess.pendingQueue queueingTime:histogram
 field count 3
-field mean 0.00061156745233333
-field stddev 0.00043856777429772
-field min 0.00023
-field max 0.001090702357
-field sum 0.001834702357
-field sqrsum 1.5067276315654e-06
+field mean 0.00057366373
+field stddev 0.00044200460992227
+field min 0.00019
+field max 0.00105699119
+field sum 0.00172099119
+field sqrsum 1.3780063757376e-06
 attr interpolationmode none
 attr source queueingTime(packetPopped)
 attr title "queueing times, histogram"
@@ -1027,9 +1026,9 @@ bin	0.0001	0
 bin	0.00012	0
 bin	0.00014	0
 bin	0.00016	0
-bin	0.00018	0
+bin	0.00018	1
 bin	0.0002	0
-bin	0.00022	1
+bin	0.00022	0
 bin	0.00024	0
 bin	0.00026	0
 bin	0.00028	0
@@ -1041,9 +1040,9 @@ bin	0.00038	0
 bin	0.0004	0
 bin	0.00042	0
 bin	0.00044	0
-bin	0.00046	0
+bin	0.00046	1
 bin	0.00048	0
-bin	0.0005	1
+bin	0.0005	0
 bin	0.00052	0
 bin	0.00054	0
 bin	0.00056	0
@@ -1070,9 +1069,9 @@ bin	0.00096	0
 bin	0.00098	0
 bin	0.001	0
 bin	0.00102	0
-bin	0.00104	0
+bin	0.00104	1
 bin	0.00106	0
-bin	0.00108	1
+bin	0.00108	0
 bin	0.0011	0
 bin	0.00112	0
 bin	0.00114	0
@@ -1083,13 +1082,11 @@ bin	0.00122	0
 bin	0.00124	0
 bin	0.00126	0
 bin	0.00128	0
-bin	0.0013	0
-bin	0.00132	0
 scalar KyberLTENetwork.ueB.wlan[0].mac.dcf.channelAccess.pendingQueue queueLength:max 2
 attr interpolationmode sample-hold
 attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
 attr title "queue length, max"
-scalar KyberLTENetwork.ueB.wlan[0].mac.dcf.channelAccess.pendingQueue queueLength:timeavg 1.8365389902987e-06
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf.channelAccess.pendingQueue queueLength:timeavg 1.7227139978782e-06
 attr interpolationmode sample-hold
 attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
 attr title "queue length, timeavg"
@@ -1115,12 +1112,12 @@ attr interpolationmode none
 attr title "packets removed, sum(packetBytes)"
 statistic KyberLTENetwork.ueB.wlan[0].mac.dcf.channelAccess.inProgressFrames queueingTime:histogram
 field count 4
-field mean 0.0004415535295
-field stddev 0.00026851264892492
-field min 9.6702289e-05
-field max 0.000715404726
-field sum 0.001766214118
-field sqrsum 9.9617520555365e-07
+field mean 0.000520986785
+field stddev 0.00028496299605248
+field min 0.00010299119
+field max 0.00072798238
+field sum 0.00208394714
+field sqrsum 1.3293206479362e-06
 attr interpolationmode none
 attr source queueingTime(packetDequeued)
 attr title "queueing times, histogram"
@@ -1134,8 +1131,8 @@ bin	5e-05	0
 bin	6e-05	0
 bin	7e-05	0
 bin	8e-05	0
-bin	9e-05	1
-bin	0.0001	0
+bin	9e-05	0
+bin	0.0001	1
 bin	0.00011	0
 bin	0.00012	0
 bin	0.00013	0
@@ -1162,7 +1159,7 @@ bin	0.00033	0
 bin	0.00034	0
 bin	0.00035	0
 bin	0.00036	0
-bin	0.00037	1
+bin	0.00037	0
 bin	0.00038	0
 bin	0.00039	0
 bin	0.0004	0
@@ -1182,8 +1179,8 @@ bin	0.00053	0
 bin	0.00054	0
 bin	0.00055	0
 bin	0.00056	0
-bin	0.00057	1
-bin	0.00058	0
+bin	0.00057	0
+bin	0.00058	1
 bin	0.00059	0
 bin	0.0006	0
 bin	0.00061	0
@@ -1191,13 +1188,13 @@ bin	0.00062	0
 bin	0.00063	0
 bin	0.00064	0
 bin	0.00065	0
-bin	0.00066	0
+bin	0.00066	1
 bin	0.00067	0
 bin	0.00068	0
 bin	0.00069	0
 bin	0.0007	0
-bin	0.00071	1
-bin	0.00072	0
+bin	0.00071	0
+bin	0.00072	1
 bin	0.00073	0
 bin	0.00074	0
 bin	0.00075	0
@@ -1214,11 +1211,12 @@ bin	0.00085	0
 bin	0.00086	0
 bin	0.00087	0
 bin	0.00088	0
+bin	0.00089	0
 scalar KyberLTENetwork.ueB.wlan[0].mac.dcf.channelAccess.inProgressFrames queueLength:max 2
 attr interpolationmode sample-hold
 attr source "count(packetEnqueued) - count(packetDequeued)"
 attr title "queue length, max"
-scalar KyberLTENetwork.ueB.wlan[0].mac.dcf.channelAccess.inProgressFrames queueLength:timeavg 1.7679825980219e-06
+scalar KyberLTENetwork.ueB.wlan[0].mac.dcf.channelAccess.inProgressFrames queueLength:timeavg 2.0860336837098e-06
 attr interpolationmode sample-hold
 attr source "count(packetEnqueued) - count(packetDequeued)"
 attr title "queue length, timeavg"
@@ -1252,12 +1250,12 @@ scalar KyberLTENetwork.ueB.wlan[0].mac.dcf frameSequenceFinished:count 3
 attr title "finished frame sequences, count"
 statistic KyberLTENetwork.ueB.wlan[0].mac.dcf frameSequenceDuration:histogram
 field count 3
-field mean 0.000306936464
-field stddev 0.00035379477288956
-field min 9.6702289e-05
-field max 0.000715404726
-field sum 0.000920809392
-field sqrsum 5.3297146144642e-07
+field mean 0.00031532158666667
+field stddev 0.00035742509392301
+field min 0.00010299119
+field max 0.00072798238
+field sum 0.00094596476
+field sqrsum 5.537885045857e-07
 attr source frameSequenceDuration(frameSequenceFinished)
 attr title "frame sequence durations, histogram"
 bin	-inf	0
@@ -1270,9 +1268,9 @@ bin	5e-05	0
 bin	6e-05	0
 bin	7e-05	0
 bin	8e-05	0
-bin	9e-05	1
+bin	9e-05	0
 bin	0.0001	1
-bin	0.00011	0
+bin	0.00011	1
 bin	0.00012	0
 bin	0.00013	0
 bin	0.00014	0
@@ -1332,8 +1330,8 @@ bin	0.00067	0
 bin	0.00068	0
 bin	0.00069	0
 bin	0.0007	0
-bin	0.00071	1
-bin	0.00072	0
+bin	0.00071	0
+bin	0.00072	1
 bin	0.00073	0
 bin	0.00074	0
 bin	0.00075	0
@@ -1350,6 +1348,7 @@ bin	0.00085	0
 bin	0.00086	0
 bin	0.00087	0
 bin	0.00088	0
+bin	0.00089	0
 statistic KyberLTENetwork.ueB.wlan[0].mac.dcf frameSequenceNumPackets:histogram
 field count 3
 field mean 2.6666666666667
@@ -1653,90 +1652,67 @@ attr source transmissionStateChanged
 attr title "Radio transmission state, count"
 statistic KyberLTENetwork.ueB.wlan[0].radio minSnir:histogram
 field count 8
-field mean 1192.4389198739
-field stddev 0.037981795711027
-field min 1192.3928740369
-field max 1192.4912368349
-field sum 9539.5113589912
-field sqrsum 11375284.631139
+field mean 107.71626091042
+field stddev 0
+field min 107.71626091042
+field max 107.71626091042
+field sum 861.73008728337
+field sqrsum 92822.342916176
 attr source minimumSnir(packetSentToUpper)
 attr title "Min SNIR, histogram"
 bin	-inf	0
-bin	1192.368	0
-bin	1192.37	0
-bin	1192.372	0
-bin	1192.374	0
-bin	1192.376	0
-bin	1192.378	0
-bin	1192.38	0
-bin	1192.382	0
-bin	1192.384	0
-bin	1192.386	0
-bin	1192.388	0
-bin	1192.39	0
-bin	1192.392	1
-bin	1192.394	0
-bin	1192.396	0
-bin	1192.398	0
-bin	1192.4	0
-bin	1192.402	1
-bin	1192.404	0
-bin	1192.406	0
-bin	1192.408	0
-bin	1192.41	1
-bin	1192.412	0
-bin	1192.414	1
-bin	1192.416	0
-bin	1192.418	0
-bin	1192.42	0
-bin	1192.422	0
-bin	1192.424	0
-bin	1192.426	0
-bin	1192.428	0
-bin	1192.43	0
-bin	1192.432	0
-bin	1192.434	0
-bin	1192.436	0
-bin	1192.438	0
-bin	1192.44	0
-bin	1192.442	0
-bin	1192.444	0
-bin	1192.446	0
-bin	1192.448	1
-bin	1192.45	0
-bin	1192.452	0
-bin	1192.454	0
-bin	1192.456	0
-bin	1192.458	0
-bin	1192.46	0
-bin	1192.462	0
-bin	1192.464	0
-bin	1192.466	1
-bin	1192.468	0
-bin	1192.47	0
-bin	1192.472	0
-bin	1192.474	0
-bin	1192.476	0
-bin	1192.478	0
-bin	1192.48	1
-bin	1192.482	0
-bin	1192.484	0
-bin	1192.486	0
-bin	1192.488	0
-bin	1192.49	1
-bin	1192.492	0
-bin	1192.494	0
-bin	1192.496	0
-bin	1192.498	0
-bin	1192.5	0
-bin	1192.502	0
-bin	1192.504	0
-bin	1192.506	0
-bin	1192.508	0
-bin	1192.51	0
-bin	1192.512	0
-bin	1192.514	0
-bin	1192.516	0
+bin	107.2	0
+bin	107.22	0
+bin	107.24	0
+bin	107.26	0
+bin	107.28	0
+bin	107.3	0
+bin	107.32	0
+bin	107.34	0
+bin	107.36	0
+bin	107.38	0
+bin	107.4	0
+bin	107.42	0
+bin	107.44	0
+bin	107.46	0
+bin	107.48	0
+bin	107.5	0
+bin	107.52	0
+bin	107.54	0
+bin	107.56	0
+bin	107.58	0
+bin	107.6	0
+bin	107.62	0
+bin	107.64	0
+bin	107.66	0
+bin	107.68	0
+bin	107.7	8
+bin	107.72	0
+bin	107.74	0
+bin	107.76	0
+bin	107.78	0
+bin	107.8	0
+bin	107.82	0
+bin	107.84	0
+bin	107.86	0
+bin	107.88	0
+bin	107.9	0
+bin	107.92	0
+bin	107.94	0
+bin	107.96	0
+bin	107.98	0
+bin	108	0
+bin	108.02	0
+bin	108.04	0
+bin	108.06	0
+bin	108.08	0
+bin	108.1	0
+bin	108.12	0
+bin	108.14	0
+bin	108.16	0
+bin	108.18	0
+bin	108.2	0
+bin	108.22	0
 statistic KyberLTENetwork.ueB.wlan[0].radio packetErrorRate:histogram
 field count 8
 field mean 0

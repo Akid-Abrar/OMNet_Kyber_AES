@@ -11,6 +11,7 @@ module LTE_Node extends AdhocHost
         numApps = 1; // Use one application
         app[0].typename = "LTEApp"; // Specify your application
         wlan[0].mac.opMode = "adhoc";
+        //wlan[0].radio.transmitter.bitrate = 54Mbps;
         // Other application parameters can be set here or in the network NED file
         // Ensure radio parameters are suitable for mobility
         wlan[0].radio.transmitter.power = 20mW;
