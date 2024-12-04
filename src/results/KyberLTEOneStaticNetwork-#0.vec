@@ -1,0 +1,71 @@
+version 2
+run KyberLTEOneStaticNetwork-0-20241120-19:24:10-3371
+attr configname KyberLTEOneStaticNetwork
+attr datetime 20241120-19:24:10
+attr experiment KyberLTEOneStaticNetwork
+attr inifile omnetpp.ini
+attr iterationvars ""
+attr iterationvarsf ""
+attr measurement ""
+attr network KyberLTENetwork
+attr processid 3371
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+param *.visualizer.*.mobilityVisualizer.displayMobility true
+param *.visualizer.*.mobilityVisualizer.displayPositions true
+param *.visualizer.*.mobilityVisualizer.displayOrientations true
+param *.visualizer.*.mobilityVisualizer.displayVelocities true
+param *.visualizer.*.mobilityVisualizer.displayMovementTrails true
+param **.constraintAreaMinX 0m
+param **.constraintAreaMaxX 955m
+param **.constraintAreaMinY 0m
+param **.constraintAreaMaxY 955m
+param **.constraintAreaMinZ 0m
+param **.constraintAreaMaxZ 0m
+
+vector 0 KyberLTENetwork.ueA.wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 1 KyberLTENetwork.ueA.wlan[0].radio radioChannel:vector ETV
+attr interpolationmode sample-hold
+attr source radioChannelChanged
+attr title "Radio channel, vector"
+vector 2 KyberLTENetwork.ueB.wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 3 KyberLTENetwork.ueB.wlan[0].radio radioChannel:vector ETV
+attr interpolationmode sample-hold
+attr source radioChannelChanged
+attr title "Radio channel, vector"
+vector 4 KyberLTENetwork.ueA.wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 5 KyberLTENetwork.ueB.wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 6 KyberLTENetwork.ueA.wlan[0].mac.dcf.recoveryProcedure contentionWindowChanged:vector ETV
+attr interpolationmode sample-hold
+attr title "contention window, vector"
+vector 7 KyberLTENetwork.ueB.wlan[0].mac.dcf.recoveryProcedure contentionWindowChanged:vector ETV
+attr interpolationmode sample-hold
+attr title "contention window, vector"
+0	0	0	0
+0	0	0	0
+0	0	0	2
+1	0	0	0
+2	0	0	0
+2	0	0	0
+2	0	0	2
+3	0	0	0
+4	0	0	1
+5	0	0	1
+6	0	0	31
+7	0	0	31
+

@@ -7,7 +7,7 @@ import inet.networklayer.configurator.ipv4.Ipv4NetworkConfigurator;
 import inet.physicallayer.ieee80211.packetlevel.Ieee80211RadioMedium;
 import kyberaesproject.LTE_Node;
 
-network KyberLTENetwork
+network KyberLTE2StaticNetwork
 {
     parameters:
         @display("bgb=955,955");
